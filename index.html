@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Método I — O Golpe Seco | O Baralho das 36 Mortes Miúdas</title>
+  <title>O Baralho das 36 Mortes Miúdas — Oraculário</title>
   <style>
     :root {
       --bg: #000000;
-      --panel: #090909;
+      --surface: #060606;
       --gold: #d4af37;
-      --gold-soft: rgba(212, 175, 55, 0.32);
+      --gold-line: rgba(212, 175, 55, 0.26);
       --cream: #eae2d0;
-      --muted: #a39b8b;
+      --muted: #9e9686;
       --alert: #c0392b;
     }
 
@@ -25,32 +25,34 @@
       background: var(--bg);
       color: var(--cream);
       font-family: Georgia, "Times New Roman", serif;
-      padding: 14px;
+      line-height: 1.52;
+      padding: 16px 12px 28px;
       min-height: 100vh;
     }
 
     .app {
-      max-width: 480px;
+      max-width: 560px;
       margin: 0 auto;
-      background: var(--panel);
-      border: 1px solid var(--gold-soft);
-      padding: 18px 14px 24px;
+      padding: 8px 4px 16px;
     }
 
     .top-code {
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
       color: var(--gold);
-      text-align: center;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      text-align: center;
+      opacity: 0.85;
+      margin-bottom: 6px;
     }
 
     h1 {
       color: var(--gold);
-      font-size: 1.3rem;
+      font-size: 1.36rem;
       text-align: center;
+      font-weight: normal;
+      letter-spacing: 0.04em;
       margin-bottom: 4px;
     }
 
@@ -58,204 +60,576 @@
       text-align: center;
       font-style: italic;
       color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 14px;
+      font-size: 0.84rem;
+      margin-bottom: 16px;
     }
 
-    .nav-stub {
+    .nav-wrap {
       display: flex;
+      flex-direction: column;
       gap: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--gold-soft);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .tabs-secondary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    button.tab-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--gold-line);
+      border-radius: 2px;
+      padding: 8px 6px;
       font-family: "Courier New", Courier, monospace;
       font-size: 0.72rem;
+      cursor: pointer;
+      transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
-    .nav-stub span {
-      padding: 5px 8px;
-      border: 1px solid var(--gold-soft);
-      color: var(--muted);
-    }
-
-    .nav-stub span.active {
-      border-color: var(--gold);
+    button.tab-btn.active {
       color: var(--gold);
-      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.09);
     }
 
     .alert-strip {
       font-size: 0.8rem;
       text-align: center;
-      padding: 8px;
-      margin-bottom: 16px;
-      border-top: 1px solid var(--gold-soft);
-      border-bottom: 1px solid var(--gold-soft);
+      padding: 9px 6px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--gold-line);
       color: var(--cream);
     }
 
     .alert-strip strong {
       color: var(--alert);
+      font-weight: normal;
+      letter-spacing: 0.04em;
     }
 
-    .action-area {
-      text-align: center;
-      margin-bottom: 18px;
+    .view {
+      display: none;
     }
 
-    .btn-draw {
-      width: 100%;
-      background: #141414;
+    .view.active {
+      display: block;
+      animation: fadeSlideIn 0.24s ease-out both;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    button.draw-btn {
+      flex: 1 1 210px;
+      background: transparent;
       color: var(--gold);
       border: 1px solid var(--gold);
-      padding: 13px 16px;
+      border-radius: 2px;
+      padding: 12px 14px;
       font-family: Georgia, serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
+      transition: background 0.18s ease, transform 0.12s ease;
     }
 
-    .btn-draw:active {
-      background: rgba(212, 175, 55, 0.2);
+    button.draw-btn:hover {
+      background: rgba(212, 175, 55, 0.08);
     }
 
-    .result-card {
-      border: 1px solid var(--gold-soft);
-      background: #040404;
-      padding: 14px;
+    button.draw-btn:active {
+      transform: translateY(1px);
+      background: rgba(212, 175, 55, 0.16);
     }
 
-    .card-art-wrap {
+    button.secondary-btn {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid var(--gold-line);
+      border-radius: 2px;
+      padding: 10px 12px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.74rem;
+      cursor: pointer;
+      transition: border-color 0.18s ease, color 0.18s ease;
+    }
+
+    button.secondary-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .sim-nao-box {
+      display: none;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border-left: 2px solid var(--alert);
+      background: rgba(192, 57, 43, 0.06);
+      font-size: 0.84rem;
+      animation: fadeSlideIn 0.2s ease-out both;
+    }
+
+    .sim-nao-box.visible {
+      display: block;
+    }
+
+    .sim-nao-box strong {
+      color: var(--alert);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 480px) {
+      .cards-grid.multi-2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 16px;
+      }
+    }
+
+    .card-item {
+      padding: 4px 2px 16px;
+      border-bottom: 1px solid var(--gold-line);
+      opacity: 0;
+      animation: fadeSlideIn 0.26s ease-out forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .card-pos {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .card-img-wrap {
       display: flex;
       justify-content: center;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
-    .card-art-wrap img {
+    .card-img-wrap img {
       width: 100%;
-      max-width: 240px;
+      max-width: 210px;
       aspect-ratio: 7 / 9;
       object-fit: cover;
-      border: 1px solid var(--gold);
-      background: #000000;
+      border: 1px solid var(--gold-line);
+      background: var(--bg);
     }
 
-    .card-num-title {
+    .card-title {
       color: var(--gold);
-      font-size: 1.08rem;
-      font-weight: bold;
-      margin-bottom: 8px;
-      text-align: center;
+      font-size: 0.98rem;
+      font-weight: normal;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
     }
 
-    .card-text {
-      font-size: 0.92rem;
+    .card-desc {
+      font-size: 0.88rem;
       color: var(--cream);
-      line-height: 1.55;
     }
 
-    .placeholder-note {
+    .empty-state {
+      padding: 20px 8px;
       text-align: center;
       color: var(--muted);
       font-size: 0.88rem;
-      padding: 18px 8px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+
+    .list-item {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 2px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+
+    .list-item img {
+      width: 68px;
+      aspect-ratio: 7 / 9;
+      object-fit: cover;
+      border: 1px solid var(--gold-line);
+      background: var(--bg);
+    }
+
+    .doc-section {
+      padding: 12px 2px 16px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+
+    .doc-section h2 {
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+
+    .doc-section p {
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+    }
+
+    .doc-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .meta-line {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-line strong {
+      color: var(--gold);
+      font-weight: normal;
+    }
+
+    .footer-bar {
+      margin-top: 20px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .footer-bar a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--gold-line);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .view.active,
+      .card-item,
+      .sim-nao-box {
+        animation: none;
+        opacity: 1;
+      }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="top-code">Fundo KGB — Inventário Nº 45 // Oraculário</div>
-    <h1>Método I — O Golpe Seco</h1>
-    <p class="subtitle">Tiragem de 1 Lâmina · O Baralho das 36 Mortes Miúdas</p>
+    <div class="top-code">Arquivo Morto // Fundo KGB — Inventário Nº 45 • Lote 36</div>
+    <h1>O Baralho das 36 Mortes Miúdas</h1>
+    <p class="subtitle">Manual Reconstituído da Lei do Estrago Inevitável</p>
 
-    <div class="nav-stub">
-      <span class="active">Método I (1 Carta)</span>
-      <span>Método II (Em breve)</span>
-      <span>Método III (Em breve)</span>
-      <span>Lista / Histórico (Em breve)</span>
-    </div>
+    <nav class="nav-wrap" aria-label="Navegação do arquivo">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-m1" onclick="abrirAba('m1')">Método I (1)</button>
+        <button class="tab-btn" id="tab-m2" onclick="abrirAba('m2')">Método II (3)</button>
+        <button class="tab-btn" id="tab-m3" onclick="abrirAba('m3')">Método III (5)</button>
+      </div>
+      <div class="tabs-secondary">
+        <button class="tab-btn" id="tab-lista" onclick="abrirAba('lista')">Lista das 36 Cartas</button>
+        <button class="tab-btn" id="tab-historico" onclick="abrirAba('historico')">Histórico &amp; Protocolo</button>
+      </div>
+    </nav>
 
     <div class="alert-strip">
       <strong>ATENÇÃO!</strong> Todas as cartas significam <strong>MORTE</strong>, invariavelmente.
+      O consulente não deve procurar esperança.
     </div>
 
-    <div class="action-area">
-      <button class="btn-draw" onclick="sortearGolpeSeco()">Cortar e Tirar 1 Lâmina</button>
-    </div>
-
-    <section id="palco" class="result-card">
-      <div class="card-art-wrap">
-        <img id="img-carta" src="pngs/verso.png" alt="Verso da lâmina" />
+    <!-- MÉTODO I -->
+    <section id="view-m1" class="view active">
+      <div class="action-row">
+        <button class="draw-btn" onclick="sortearMetodo('m1')">
+          Método I — O Golpe Seco (1 Lâmina)
+        </button>
+        <button class="secondary-btn" onclick="alternarSimNao()">Sim / Não</button>
       </div>
-      <p class="placeholder-note" id="texto-carta">
-        Toque em <strong>Cortar e Tirar 1 Lâmina</strong> para revelar o estrago imediato.
-      </p>
+
+      <div id="sim-nao-box" class="sim-nao-box">
+        Para perguntas de <strong>SIM</strong> ou <strong>NÃO</strong>, todas as 36 Mortes Miúdas significam <strong>NÃO</strong>.
+      </div>
+
+      <div id="out-m1" class="empty-state">
+        Toque em <strong>Método I — O Golpe Seco</strong> para sortear 1 lâmina.
+      </div>
     </section>
+
+    <!-- MÉTODO II -->
+    <section id="view-m2" class="view">
+      <div class="action-row">
+        <button class="draw-btn" onclick="sortearMetodo('m2')">
+          Método II — A Triangulação do Prejuízo (3 Lâminas)
+        </button>
+      </div>
+      <div id="out-m2" class="empty-state">
+        Disponha três cartas nos vértices do triângulo com o olho vigilante ao centro: <strong>1. A Raiz Podre</strong>, <strong>2. O Sintoma Atual</strong> e <strong>3. A Sentença</strong>.
+      </div>
+    </section>
+
+    <!-- MÉTODO III -->
+    <section id="view-m3" class="view">
+      <div class="action-row">
+        <button class="draw-btn" onclick="sortearMetodo('m3')">
+          Método III — A Cruz da Lei do Estrago (5 Lâminas)
+        </button>
+      </div>
+      <div id="out-m3" class="empty-state">
+        Forme a cruz: <strong>1. Centro</strong>, <strong>2. Esquerda</strong>, <strong>3. Direita</strong>, <strong>4. Acima</strong> e <strong>5. Abaixo</strong>.
+      </div>
+    </section>
+
+    <!-- LISTA DAS 36 CARTAS -->
+    <section id="view-lista" class="view">
+      <div id="lista-36"></div>
+    </section>
+
+    <!-- HISTÓRICO & PROTOCOLO -->
+    <section id="view-historico" class="view">
+      <div class="doc-section">
+        <h2>Ficha Técnica</h2>
+        <div class="meta-line"><strong>Origem:</strong> Célula Ocultista do Partido Nazista, Berlim, maio de 1945</div>
+        <div class="meta-line"><strong>Reconstituição e Selagem:</strong> Departamento Experimental da KGB (anos 1980)</div>
+        <div class="meta-line"><strong>Classificação:</strong> Ativo Contaminado / Arquivo Morto</div>
+        <div class="meta-line"><strong>Advertência:</strong> Nenhuma lâmina deste maço é segura para qualquer tipo de interação.</div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Histórico</h2>
+        <p>
+          Em maio de 1945, durante as buscas nos escombros de Berlim, uma unidade especial da contrainteligência soviética apreendeu os cadernos técnicos de uma célula nazista independente dedicada ao estudo de sistemas oraculares e cartomancia desviante. Com o objetivo de atacar inimigos do regime à distância com forças etéreas, o alto escalão do Reich encomendou um baralho de trinta e seis lâminas regido exclusivamente pela chamada Lei do Estrago Inevitável — uma premissa segundo a qual todo processo caminha de forma inexorável para a deterioração, o desgaste e o colapso, sem qualquer possibilidade de reversão. Assim sendo, o baralho devia manifestar a pior sorte possível para o alvo designado.
+        </p>
+        <p>
+          Os cadernos recolhidos em Berlim foram transferidos sob sigilo para um depósito técnico da KGB em Moscou, onde permaneceram arquivados sem movimentação por mais de três décadas até serem reativados no início da década de 1980 por uma seção especial dedicada a métodos não convencionais de inteligência. A partir das especificações apreendidas, o departamento mandou executar as trinta e seis ilustrações em estilo de gravura antiga, carimbando o selo oficial da espada e do escudo no canto superior direito de cada lâmina e gravando no verso o emblema do triângulo cortado pelo olho vigilante — adotado como o Olho da Lei do Estrago, que tudo registra sem intervir.
+        </p>
+        <p>
+          Concluída a primeira tiragem física, o protocolo autorizou exatamente três sessões experimentais de leitura cruzada com analistas internos e operadores requisitados, mas o programa foi interrompido imediatamente após a terceira rodada: semanas depois, todos os envolvidos na manipulação do baralho morreram em episódios distintos e aparentemente banais que reproduziam, ponto a ponto, as lâminas sorteadas sobre a mesa. Lacrado novamente como ativo contaminado em arquivo morto, o maço só veio a público após o vazamento recente das matrizes gráficas que dão origem a esta edição.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Protocolo de Campo</h2>
+        <p>
+          Antes de cada tiragem, embaralhe as lâminas de olhos fechados, mentalizando com o alvo da má sorte. Em geral, qualquer pessoa envolvida com as cartas terá má sorte. A seguir, corte o maço firmemente com a mão esquerda em três montes equivalentes e reagrupe-os na ordem inversa, sem olhar a carta do fundo.
+        </p>
+        <p style="color: var(--alert);">
+          Nenhuma lâmina deste baralho é considerada segura. Consulte por sua conta e risco.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer-bar">
+      <a href="O%20Baralho%20das%2036%20Mortes%20Mi%C3%BAdas.pdf" target="_blank" rel="noopener">Manual PDF (24p)</a>
+      <span>Exposição Oraculário</span>
+    </footer>
   </div>
 
   <script>
-    // Caminho base onde ficam 1.png ... 36.png e verso.png
     const PASTA_PNGS = "pngs";
+    const STAGGER_MS = 75;
+    const ANIM_DURACAO_MS = 260;
 
-    // Preencha aqui os significados revisados de 1 a 36 (mantendo numero e nome)
     const CARTAS = [
-      { numero: 1, nome: "O Vinil Americano na Sarjeta", significado: "Denota notícias adversas vindas de longe, acompanhadas de perturbação auditiva persistente e desgastante. Traz consigo a repetição exaustiva de um mesmo episódio constrangedor imposto por terceiros de pouco convívio." },
-      { numero: 2, nome: "O Carro de Lixo", significado: "Anuncia obstrução fétida e atraso inevitável no exato momento em que a pontualidade seria decisiva. Indica que aquilo que se tentou ocultar virá à tona com repulsa pública e severo mal-estar estomacal." },
-      { numero: 3, nome: "A Larva da Podridão", significado: "Denota corrupção interna já instalada, tanto nas vísceras quanto em compromissos dados como certos. Traz consigo a ação silenciosa de parasitas próximos que consomem o pouco que ainda resta." },
-      { numero: 4, nome: "As Cartelas Vazias de Remédio para Depressão", significado: "" },
-      { numero: 5, nome: "A Árvore Arrancada pelo Vendaval", significado: "" },
-      { numero: 6, nome: "O Sorvete Derretido", significado: "" },
-      { numero: 7, nome: "A Aranha no Escritório", significado: "" },
-      { numero: 8, nome: "A Carcaça de Morcego", significado: "" },
-      { numero: 9, nome: "O Buquê de Flores Mortas", significado: "" },
-      { numero: 10, nome: "O Açougue", significado: "" },
-      { numero: 11, nome: "A Tropa de Choque", significado: "" },
-      { numero: 12, nome: "O Pinguim Afogado", significado: "" },
-      { numero: 13, nome: "O Ovo Estourado", significado: "" },
-      { numero: 14, nome: "O Tamanco", significado: "" },
-      { numero: 15, nome: "A Última Abelha Rainha", significado: "" },
-      { numero: 16, nome: "O Carro em Chamas", significado: "" },
-      { numero: 17, nome: "O Pinto Natimorto", significado: "" },
-      { numero: 18, nome: "O Computador Destruído", significado: "" },
-      { numero: 19, nome: "O Saco de Lixo", significado: "" },
-      { numero: 20, nome: "As Garrafas Vazias", significado: "" },
-      { numero: 21, nome: "Os Óculos na Merda", significado: "" },
-      { numero: 22, nome: "A Maionese Estourada", significado: "" },
-      { numero: 23, nome: "O Meio Rato", significado: "" },
-      { numero: 24, nome: "A Garrafa de Vinho Quebrada", significado: "" },
-      { numero: 25, nome: "A Camisinha Ensanguentada", significado: "" },
-      { numero: 26, nome: "As Páginas Arrancadas", significado: "" },
-      { numero: 27, nome: "A Meia na Merda", significado: "" },
-      { numero: 28, nome: "A Maleta Misteriosa", significado: "" },
-      { numero: 29, nome: "A Última Borboleta", significado: "" },
-      { numero: 30, nome: "O Papagaio Morto", significado: "" },
-      { numero: 31, nome: "O Sol de Papelão no Asfalto", significado: "" },
-      { numero: 32, nome: "O Sangue na Calçada", significado: "" },
-      { numero: 33, nome: "As Caixas de Cigarro na Sarjeta", significado: "" },
-      { numero: 34, nome: "Os Budas no Lixo", significado: "" },
-      { numero: 35, nome: "A Comida Jogada Fora", significado: "" },
-      { numero: 36, nome: "O Terço Arrebentado", significado: "" }
+      { numero: 1, nome: "O Vinil Americano na Sarjeta", significado: "Denota notícias adversas vindas de longe, acompanhadas de perturbação auditiva. Traz consigo a repetição exaustiva de um mesmo episódio constrangedor." },
+      { numero: 2, nome: "O Carro de Lixo", significado: "Anuncia atraso inevitável no exato momento em que a pontualidade seria decisiva. Indica um pouco de esperança, que se tornará desespero muito em breve." },
+      { numero: 3, nome: "A Larva da Podridão", significado: "Denota corrupção, tanto nas vísceras quanto em compromissos dados como certos. Traz consigo a ação silenciosa de parasitas ocultos." },
+      { numero: 4, nome: "As Cartelas Vazias de Remédio para Depressão", significado: "Indica esgotamento súbito de recursos e falência nervosa. Denota isolamento absoluto, no qual nenhum pedido de socorro encontra resposta." },
+      { numero: 5, nome: "A Árvore Arrancada pelo Vendaval", significado: "Anuncia abalo no trabalho ou na família. Pressagia complicações na coluna vertebral e/ou nos pulmões." },
+      { numero: 6, nome: "O Sorvete Derretido", significado: "Denota a perda de um prazer imediato. Traz consigo desequilíbrios na saúde e possíveis encontros humilhantes." },
+      { numero: 7, nome: "A Aranha no Escritório", significado: "Anuncia armadilha feita por uma mulher em ambiente de trabalho. Também indica reações alérgicas súbitas, choque anafilático e problemas na garganta." },
+      { numero: 8, nome: "A Carcaça de Morcego", significado: "Denota o encerramento abrupto de um ciclo que deixa dívidas. Possível doença respiratória." },
+      { numero: 9, nome: "O Buquê de Flores Mortas", significado: "Anuncia que o pior momento da vida do consulente se aproxima. Não há como escapar." },
+      { numero: 10, nome: "O Açougue", significado: "Denota queda brusca nos rendimentos financeiros. Fim de amizades, por morte ou acidente. Indica a brutalidade fria de um homem impaciente." },
+      { numero: 11, nome: "A Tropa de Choque", significado: "Anuncia confronto com inimigos muito mais poderosos e organizados. Traz consigo tensão muscular, cãimbras. Resultados desfavoráveis em questões legais." },
+      { numero: 12, nome: "O Pinguim Afogado", significado: "Significa perda familiar próxima. Morte de parente em outra cidade, estado ou país. Possível alagamento acontecerá em breve." },
+      { numero: 13, nome: "O Ovo Estourado", significado: "Se a consulente for mulher, indica início da menopausa, independente da idade. Indica cólicas viscerais agudas. Possível ingratidão vinda de pessoa mais jovem." },
+      { numero: 14, nome: "O Tamanco", significado: "Denota afronta grosseira de estranho. Traz consigo dores nos pés, inflamações e deslocamentos penosos." },
+      { numero: 15, nome: "A Última Abelha Rainha", significado: "Anuncia exaustão extrema, provocada por uma mulher. Indica queda severa de imunidade e processos inflamatórios generalizados." },
+      { numero: 16, nome: "O Carro em Chamas", significado: "Denota problemas com veículos. Possível falta de paciência em momento crítico. Pressagia elevação brusca da pressão arterial e febre. Possível perda material sem ressarcimento." },
+      { numero: 17, nome: "O Pinto Natimorto", significado: "Anuncia falha repentina em projeto de longo prazo. Traz consigo arritmias, fadiga persistente e esterilidade total de qualquer iniciativa." },
+      { numero: 18, nome: "O Computador Destruído", significado: "Denota violação de sigilo, perda de registros e traição. Indica cefaleia intensa atrás dos olhos e impossibilidade de recuperação do que foi perdido." },
+      { numero: 19, nome: "O Saco de Lixo", significado: "Anuncia perda repentina de lar. Traz consigo problemas sérios para os rins." },
+      { numero: 20, nome: "As Garrafas Vazias", significado: "Denota conflito com o círculo social próximo. Indica complicações envolvendo o fígado. Aliados próximos se afastam quando recursos certos param de chegar." },
+      { numero: 21, nome: "Os Óculos na Merda", significado: "Anuncia cegueira diante de uma armadilha evidente, percebida apenas quando o dano já é irreversível. Pressagia problemas de visão. Possível vexame testemunhado por um inimigo." },
+      { numero: 22, nome: "A Maionese Estourada", significado: "Denota encruzilhada em que todas as opções disponíveis encontram-se corrompidas. Indica intoxicação alimentar, acidez gástrica. Consulente será confrontado com uma escolha cujas consequências ruins perduram." },
+      { numero: 23, nome: "O Meio Rato", significado: "Anuncia subtração contínua e discreta de recursos por inimigos. Traz consigo febres, sudorese, náuseas e falta de disposição." },
+      { numero: 24, nome: "A Garrafa de Vinho Quebrada", significado: "Denota o desfecho violento de uma ocasião que prometia tranquilidade. Indica falha cardíaca iminente." },
+      { numero: 25, nome: "A Camisinha Ensanguentada", significado: "Anuncia envolvimento imprudente seguido de pânico, vergonha e necessidade urgente de exames clínicos humilhantes. Traz consigo chantagem, repulsa mútua e a contaminação de qualquer pacto iniciado sob tais auspícios." },
+      { numero: 26, nome: "As Páginas Arrancadas", significado: "Denota o desaparecimento oportuno da prova documental que asseguraria o direito do consulente. Indica lapsos de memória, cláusulas capciosas e o uso perverso da burocracia por um adversário." },
+      { numero: 27, nome: "A Meia na Merda", significado: "Anuncia o recebimento de uma notícia pela manhã capaz de arruinar todo o curso do dia. Pressagia má circulação nos membros inferiores, infecções persistentes. Problemas nos pés." },
+      { numero: 28, nome: "A Maleta Misteriosa", significado: "Denota a aproximação de um homem que entrega ao consulente um presente indesejado. Indica enfermidades internas silenciosas que apenas se manifestam em estágio avançado." },
+      { numero: 29, nome: "A Última Borboleta", significado: "Anuncia a passagem breve e devastadora de uma figura feminina sedutora que deixa ruína emocional. Traz consigo disfunções glandulares, ilusão efêmera e a extinção da última esperança." },
+      { numero: 30, nome: "O Papagaio Morto", significado: "Na hora exata em que você precisar se defender, a voz vai falhar e a garganta vai travar. Seus inimigos repetirão a versão mais mentirosa da história enquanto você assiste calado." },
+      { numero: 31, nome: "O Sol de Papelão no Asfalto", significado: "Anuncia oferta ilusória e fraudulenta que se desfaz ao primeiro exame rigoroso. Pressagia insolação, queimaduras, sede extrema e o vexame de ter dado crédito a charlatães." },
+      { numero: 32, nome: "O Sangue na Calçada", significado: "Denota risco iminente de agressão gratuita em trajetos habituais. Traz consigo anemia, queda abrupta de pressão e cicatrizes duradouras decorrentes de imprudência." },
+      { numero: 33, nome: "As Caixas de Cigarro na Sarjeta", significado: "Anuncia o fim do dinheiro para o cigarro. Indica caminhos aparentemente abertos que se revelam trancados, impedindo o consulente de conseguir novas oportunidades." },
+      { numero: 34, nome: "Os Budas no Lixo", significado: "Denota a presença de pessoas próximas que trazem palavras espirituais diante do colapso financeiro de um lar. Traz consigo peso dorsal, dores lombares e a revelação da cobiça de falsos guias." },
+      { numero: 35, nome: "A Comida Jogada Fora", significado: "Anuncia escassez futura decorrente de desperdício, acompanhada de gastrite nervosa e penúria doméstica. Indica feitiço praticado pelas costas por aqueles que recentemente partilharam da mesa do consulente." },
+      { numero: 36, nome: "O Terço Arrebentado", significado: "Denota sucessão incontrolável de pequenos desastres diante dos quais nenhuma intercessão oferece amparo. Pressagia dores ósseas, culpa persistente e entraves burocráticos exatamente na vez do consulente." }
     ];
 
-    function sortearGolpeSeco() {
-      const idx = Math.floor(Math.random() * CARTAS.length);
-      const carta = CARTAS[idx];
-      const palco = document.getElementById("palco");
+    const CONFIG_METODOS = {
+      m1: {
+        outId: "out-m1",
+        multiClass: "",
+        posicoes: ["Lâmina Única — O Golpe Seco"],
+        padraoVibracao: 45
+      },
+      m2: {
+        outId: "out-m2",
+        multiClass: "multi-2",
+        posicoes: [
+          "1. A Raiz Podre (Vértice 1)",
+          "2. O Sintoma Atual (Vértice 2)",
+          "3. A Sentença (Vértice 3)"
+        ],
+        padraoVibracao: [35, 45, 35]
+      },
+      m3: {
+        outId: "out-m3",
+        multiClass: "multi-2",
+        posicoes: [
+          "1. Centro — Colapso principal em curso",
+          "2. Esquerda — Inimigo oculto ou falso aliado",
+          "3. Direita — Humilhação pública ou falha iminente",
+          "4. Acima — Ilusão que o consulente ainda alimenta",
+          "5. Abaixo — Órgão afetado ou ruína final"
+        ],
+        padraoVibracao: [30, 40, 30, 40, 55]
+      }
+    };
 
-      const imgSrc = `${PASTA_PNGS}/${carta.numero}.png`;
-      const textoSignificado = carta.significado
-        ? carta.significado
-        : "Significado pendente de preenchimento no código para esta lâmina.";
+    let timerVibracao = null;
 
-      palco.innerHTML = `
-        <div class="card-art-wrap">
-          <img src="${imgSrc}" alt="Carta ${carta.numero}: ${carta.nome}" onerror="this.src='${PASTA_PNGS}/verso.png'" />
-        </div>
-        <div class="card-num-title">${carta.numero}. ${carta.nome}</div>
-        <p class="card-text">${textoSignificado}</p>
-      `;
+    function vibrarAposAnimacao(totalAnimMs, padrao) {
+      if (timerVibracao) {
+        clearTimeout(timerVibracao);
+      }
+      timerVibracao = setTimeout(() => {
+        if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+          try {
+            navigator.vibrate(padrao);
+          } catch (_) {
+            // Ignora caso o aparelho/navegador bloqueie vibração
+          }
+        }
+      }, totalAnimMs);
     }
+
+    function abrirAba(idAba) {
+      document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach((el) => el.classList.remove("active"));
+
+      document.getElementById(`view-${idAba}`).classList.add("active");
+      document.getElementById(`tab-${idAba}`).classList.add("active");
+    }
+
+    function alternarSimNao() {
+      const box = document.getElementById("sim-nao-box");
+      const vaiAbrir = !box.classList.contains("visible");
+      box.classList.toggle("visible");
+      if (vaiAbrir) {
+        vibrarAposAnimacao(200, 30);
+      }
+    }
+
+    function sortearSemRepetir(lista, qtd) {
+      const copia = [...lista];
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+      }
+      return copia.slice(0, qtd);
+    }
+
+    function sortearMetodo(chave) {
+      const cfg = CONFIG_METODOS[chave];
+      if (!cfg) return;
+
+      const sorteadas = sortearSemRepetir(CARTAS, cfg.posicoes.length);
+      const out = document.getElementById(cfg.outId);
+
+      const htmlCards = sorteadas
+        .map((carta, i) => {
+          const delay = i * STAGGER_MS;
+          return `
+            <article class="card-item" style="--delay: ${delay}ms;">
+              <div class="card-pos">${cfg.posicoes[i]}</div>
+              <div class="card-img-wrap">
+                <img
+                  src="${PASTA_PNGS}/${carta.numero}.png"
+                  alt="Carta ${carta.numero}: ${carta.nome}"
+                  onerror="this.onerror=null; this.src='${PASTA_PNGS}/verso.png';"
+                />
+              </div>
+              <div class="card-title">${carta.numero}. ${carta.nome}</div>
+              <p class="card-desc">${carta.significado}</p>
+            </article>
+          `;
+        })
+        .join("");
+
+      out.className = `cards-grid ${cfg.multiClass}`;
+      out.innerHTML = htmlCards;
+
+      const tempoTotalAnim = (sorteadas.length - 1) * STAGGER_MS + ANIM_DURACAO_MS;
+      vibrarAposAnimacao(tempoTotalAnim, cfg.padraoVibracao);
+    }
+
+    function renderizarListaCompleta() {
+      const alvo = document.getElementById("lista-36");
+      alvo.innerHTML = CARTAS
+        .map((carta) => `
+          <article class="list-item">
+            <img
+              src="${PASTA_PNGS}/${carta.numero}.png"
+              alt="Carta ${carta.numero}: ${carta.nome}"
+              onerror="this.onerror=null; this.src='${PASTA_PNGS}/verso.png';"
+            />
+            <div>
+              <div class="card-title">${carta.numero}. ${carta.nome}</div>
+              <p class="card-desc">${carta.significado}</p>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    renderizarListaCompleta();
   </script>
 </body>
 </html>
