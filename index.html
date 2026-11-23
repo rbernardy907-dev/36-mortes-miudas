@@ -4,118 +4,260 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>O Baralho das 36 Mortes Miúdas — Oraculário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #000000;
-      --surface: #060606;
+      --surface: #0e0e0e;
+      --surface-elevated: #151515;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-gold: rgba(212, 175, 55, 0.28);
       --gold: #d4af37;
-      --gold-line: rgba(212, 175, 55, 0.26);
+      --gold-glow: rgba(212, 175, 55, 0.14);
       --cream: #eae2d0;
-      --muted: #9e9686;
+      --muted: #9b9589;
       --alert: #c0392b;
+      --alert-soft: rgba(192, 57, 43, 0.12);
+      --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background: var(--bg);
+      background: radial-gradient(circle at 50% 0%, #12100a 0%, #000000 58%);
+      background-color: var(--bg);
       color: var(--cream);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.52;
-      padding: 16px 12px 28px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 20px 16px 64px;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .app {
-      max-width: 560px;
+    .shell {
+      max-width: 640px;
       margin: 0 auto;
-      padding: 8px 4px 16px;
     }
 
-    .top-code {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      text-transform: uppercase;
+    /* LANDING PAGE */
+    .landing {
+      min-height: calc(100vh - 84px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       text-align: center;
-      opacity: 0.85;
-      margin-bottom: 6px;
+      padding: 24px 8px;
+      animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .landing.hidden {
+      display: none;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    .logo-trigger {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 16px;
+      color: var(--gold);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-trigger:hover {
+      transform: translateY(-3px) scale(1.015);
+    }
+
+    .logo-trigger:active {
+      transform: scale(0.98);
+    }
+
+    .logo-trigger img {
+      width: 230px;
+      max-width: 68vw;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 24px;
+    }
+
+    .logo-svg {
+      width: 210px;
+      max-width: 64vw;
+      height: auto;
+      display: block;
+    }
+
+    .cta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #000000;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      box-shadow: 0 8px 24px var(--gold-glow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .logo-trigger:hover .cta-pill {
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.28);
+    }
+
+    .landing-bottom {
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .landing-bottom .warn {
+      color: var(--alert);
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+
+    /* SISTEMA PRINCIPAL */
+    .app {
+      display: none;
+    }
+
+    .app.active {
+      display: block;
+      animation: fadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .app-header {
+      padding: 4px 0 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .top-meta {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
     }
 
     h1 {
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: clamp(1.55rem, 5vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+    }
+
+    h1 span {
       color: var(--gold);
-      font-size: 1.36rem;
-      text-align: center;
-      font-weight: normal;
-      letter-spacing: 0.04em;
-      margin-bottom: 4px;
     }
 
     .subtitle {
-      text-align: center;
-      font-style: italic;
       color: var(--muted);
-      font-size: 0.84rem;
-      margin-bottom: 16px;
+      font-size: 0.9rem;
     }
 
+    /* NAVEGAÇÃO EM PÍLULAS CONTEMPORÂNEAS */
     .nav-wrap {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding-bottom: 14px;
-      margin-bottom: 14px;
-      border-bottom: 1px solid var(--gold-line);
+      gap: 8px;
+      margin-bottom: 20px;
     }
 
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-
-    .tabs-secondary {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
+    .nav-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
 
     button.tab-btn {
-      background: transparent;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
       color: var(--muted);
-      border: 1px solid var(--gold-line);
-      border-radius: 2px;
-      padding: 8px 6px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.72rem;
+      padding: 8px 15px;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      transition: all 0.18s ease;
+    }
+
+    button.tab-btn:hover {
+      color: var(--cream);
+      background: var(--surface-elevated);
     }
 
     button.tab-btn.active {
-      color: var(--gold);
+      background: var(--gold);
       border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.09);
+      color: #000000;
+      font-weight: 600;
     }
 
+    /* BANNER DE AVISO */
     .alert-strip {
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 9px 6px;
-      margin-bottom: 18px;
-      border-bottom: 1px solid var(--gold-line);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      border-radius: 14px;
+      background: var(--alert-soft);
+      border: 1px solid rgba(192, 57, 43, 0.25);
       color: var(--cream);
     }
 
     .alert-strip strong {
       color: var(--alert);
-      font-weight: normal;
-      letter-spacing: 0.04em;
+      font-weight: 600;
     }
 
     .view {
@@ -124,13 +266,13 @@
 
     .view.active {
       display: block;
-      animation: fadeSlideIn 0.24s ease-out both;
+      animation: fadeUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    @keyframes fadeSlideIn {
+    @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
@@ -138,60 +280,96 @@
       }
     }
 
+    /* DIAGRAMA DO MÉTODO */
+    .method-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .method-diagram img {
+      width: 100%;
+      max-width: 248px;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .method-diagram-caption {
+      margin-top: 12px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* AÇÕES */
     .action-row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      align-items: center;
+      margin-bottom: 22px;
     }
 
     button.draw-btn {
-      flex: 1 1 210px;
-      background: transparent;
-      color: var(--gold);
-      border: 1px solid var(--gold);
-      border-radius: 2px;
-      padding: 12px 14px;
-      font-family: Georgia, serif;
-      font-size: 0.95rem;
+      flex: 1 1 230px;
+      background: var(--gold);
+      color: #000000;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-align: center;
       cursor: pointer;
-      transition: background 0.18s ease, transform 0.12s ease;
+      box-shadow: 0 6px 20px var(--gold-glow);
+      transition: transform 0.15s ease, filter 0.15s ease;
     }
 
     button.draw-btn:hover {
-      background: rgba(212, 175, 55, 0.08);
+      filter: brightness(1.06);
     }
 
     button.draw-btn:active {
-      transform: translateY(1px);
-      background: rgba(212, 175, 55, 0.16);
+      transform: scale(0.985);
     }
 
     button.secondary-btn {
-      background: transparent;
+      background: var(--surface);
       color: var(--cream);
-      border: 1px solid var(--gold-line);
-      border-radius: 2px;
-      padding: 10px 12px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.74rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      transition: background 0.16s ease, border-color 0.16s ease;
     }
 
     button.secondary-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold);
+      background: var(--surface-elevated);
+      border-color: var(--border-gold);
     }
 
     .sim-nao-box {
       display: none;
-      padding: 10px 12px;
-      margin-bottom: 16px;
-      border-left: 2px solid var(--alert);
-      background: rgba(192, 57, 43, 0.06);
-      font-size: 0.84rem;
-      animation: fadeSlideIn 0.2s ease-out both;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid rgba(192, 57, 43, 0.32);
+      font-size: 0.86rem;
+      color: var(--cream);
+      animation: fadeUp 0.2s ease-out both;
     }
 
     .sim-nao-box.visible {
@@ -200,148 +378,348 @@
 
     .sim-nao-box strong {
       color: var(--alert);
+      font-weight: 600;
     }
 
+    /* CARTAS SORTEADAS */
     .cards-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
-    @media (min-width: 480px) {
+    @media (min-width: 500px) {
       .cards-grid.multi-2 {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px 16px;
+        gap: 16px;
       }
     }
 
     .card-item {
-      padding: 4px 2px 16px;
-      border-bottom: 1px solid var(--gold-line);
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
       opacity: 0;
-      animation: fadeSlideIn 0.26s ease-out forwards;
+      animation: fadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       animation-delay: var(--delay, 0ms);
     }
 
     .card-pos {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.7rem;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.1);
+      font-size: 0.72rem;
+      font-weight: 500;
       color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
+      margin-bottom: 14px;
     }
 
     .card-img-wrap {
       display: flex;
       justify-content: center;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
 
     .card-img-wrap img {
       width: 100%;
-      max-width: 210px;
+      max-width: 220px;
       aspect-ratio: 7 / 9;
       object-fit: cover;
-      border: 1px solid var(--gold-line);
+      border-radius: 12px;
       background: var(--bg);
     }
 
     .card-title {
-      color: var(--gold);
-      font-size: 0.98rem;
-      font-weight: normal;
-      letter-spacing: 0.02em;
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
       margin-bottom: 6px;
     }
 
     .card-desc {
       font-size: 0.88rem;
-      color: var(--cream);
+      line-height: 1.6;
+      color: var(--muted);
     }
 
     .empty-state {
-      padding: 20px 8px;
-      text-align: center;
+      padding: 24px 18px;
+      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
       color: var(--muted);
       font-size: 0.88rem;
-      border-bottom: 1px solid var(--gold-line);
     }
 
-    .list-item {
+    .empty-state strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    /* LISTA DAS 36 CARTAS COM ZOOM */
+    .list-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    #lista-36 {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button.list-card-btn {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      text-align: left;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
       display: grid;
-      grid-template-columns: 68px 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 12px 2px;
-      border-bottom: 1px solid var(--gold-line);
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 14px;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
 
-    .list-item img {
-      width: 68px;
+    button.list-card-btn:hover {
+      background: var(--surface-elevated);
+      border-color: var(--border-gold);
+      transform: translateY(-1px);
+    }
+
+    button.list-card-btn img {
+      width: 64px;
       aspect-ratio: 7 / 9;
       object-fit: cover;
-      border: 1px solid var(--gold-line);
+      border-radius: 10px;
       background: var(--bg);
     }
 
-    .doc-section {
-      padding: 12px 2px 16px;
+    .zoom-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: var(--gold);
+    }
+
+    /* MODAL DE ZOOM */
+    .zoom-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      overflow-y: auto;
+    }
+
+    .zoom-modal.open {
+      display: flex;
+      animation: fadeUp 0.2s ease-out both;
+    }
+
+    .zoom-panel {
+      width: 100%;
+      max-width: 440px;
+      max-height: 92vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .zoom-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    button.zoom-close {
+      background: var(--surface-elevated);
+      color: var(--cream);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    button.zoom-close:hover {
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    .zoom-img-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .zoom-img-wrap img {
+      width: 100%;
+      max-width: 290px;
+      aspect-ratio: 7 / 9;
+      object-fit: contain;
+      border-radius: 14px;
+      background: var(--bg);
+    }
+
+    .zoom-title {
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: 1.15rem;
       margin-bottom: 8px;
-      border-bottom: 1px solid var(--gold-line);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .zoom-desc {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* MANUAL & HISTÓRICO */
+    .doc-section {
+      padding: 20px;
+      margin-bottom: 14px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
     }
 
     .doc-section h2 {
-      color: var(--gold);
-      font-size: 1rem;
-      font-weight: normal;
-      letter-spacing: 0.03em;
-      margin-bottom: 8px;
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
     }
 
     .doc-section p {
       font-size: 0.88rem;
-      margin-bottom: 10px;
+      line-height: 1.68;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .doc-section p strong {
+      color: var(--cream);
+      font-weight: 500;
     }
 
     .doc-section p:last-child {
       margin-bottom: 0;
     }
 
+    .manual-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .manual-link-btn {
+      display: inline-flex;
+      align-items: center;
+      color: #000000;
+      background: var(--gold);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 999px;
+      transition: filter 0.16s ease;
+    }
+
+    .manual-link-btn.secondary {
+      background: var(--surface-elevated);
+      color: var(--cream);
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-body);
+      font-weight: 500;
+    }
+
+    .manual-link-btn:hover {
+      filter: brightness(1.07);
+    }
+
     .meta-line {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.74rem;
+      font-size: 0.82rem;
+      line-height: 1.6;
       color: var(--muted);
       margin-bottom: 6px;
     }
 
     .meta-line strong {
-      color: var(--gold);
-      font-weight: normal;
+      color: var(--cream);
+      font-weight: 500;
     }
 
     .footer-bar {
-      margin-top: 20px;
-      padding-top: 12px;
+      margin-top: 28px;
+      padding-top: 16px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.72rem;
+      gap: 12px;
+      font-size: 0.78rem;
       color: var(--muted);
     }
 
-    .footer-bar a {
-      color: var(--gold);
+    .footer-bar a,
+    .footer-bar button {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      color: var(--cream);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      cursor: pointer;
       text-decoration: none;
-      border-bottom: 1px dashed var(--gold-line);
+      padding: 7px 14px;
+      transition: border-color 0.16s ease, color 0.16s ease;
+    }
+
+    .footer-bar a:hover,
+    .footer-bar button:hover {
+      border-color: var(--border-gold);
+      color: var(--gold);
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .landing,
+      .app.active,
       .view.active,
       .card-item,
-      .sim-nao-box {
+      .sim-nao-box,
+      .zoom-modal {
         animation: none;
         opacity: 1;
       }
@@ -349,119 +727,244 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="top-code">Arquivo Morto // Fundo KGB — Inventário Nº 45 • Lote 36</div>
-    <h1>O Baralho das 36 Mortes Miúdas</h1>
-    <p class="subtitle">Manual Reconstituído da Lei do Estrago Inevitável</p>
-
-    <nav class="nav-wrap" aria-label="Navegação do arquivo">
-      <div class="tabs">
-        <button class="tab-btn active" id="tab-m1" onclick="abrirAba('m1')">Método I (1)</button>
-        <button class="tab-btn" id="tab-m2" onclick="abrirAba('m2')">Método II (3)</button>
-        <button class="tab-btn" id="tab-m3" onclick="abrirAba('m3')">Método III (5)</button>
+  <div class="shell">
+    <!-- LANDING PAGE -->
+    <section id="landing" class="landing" aria-label="Entrada do projeto">
+      <div class="eyebrow-pill">
+        <span class="eyebrow-dot"></span>
+        <span>Fundo KGB · Inventário Nº 45</span>
       </div>
-      <div class="tabs-secondary">
-        <button class="tab-btn" id="tab-lista" onclick="abrirAba('lista')">Lista das 36 Cartas</button>
-        <button class="tab-btn" id="tab-historico" onclick="abrirAba('historico')">Histórico &amp; Protocolo</button>
-      </div>
-    </nav>
 
-    <div class="alert-strip">
-      <strong>ATENÇÃO!</strong> Todas as cartas significam <strong>MORTE</strong>, invariavelmente.
-      O consulente não deve procurar esperança.
+      <button type="button" class="logo-trigger" onclick="entrarNoOraculario()" aria-label="Entrar no Oraculário">
+        <img id="landing-logo-img" src="assetslogo-36-mortes.jpg" alt="Logotipo 36 Mortes Miúdas" />
+        <svg id="landing-logo-svg" class="logo-svg" style="display: none;" viewBox="0 0 220 220" width="220" height="220" role="img" aria-label="Emblema 36 Mortes Miúdas">
+          <polygon points="110,18 113.5,25.5 121.5,26.5 115.6,32 117.1,40 110,36 102.9,40 104.4,32 98.5,26.5 106.5,25.5" fill="#d4af37" />
+          <line x1="110" y1="45" x2="110" y2="70" stroke="#d4af37" stroke-width="2.2" />
+          <path d="M84,74 Q97,66 110,70 Q123,66 136,74" fill="none" stroke="#d4af37" stroke-width="2.2" />
+          <path d="M68,78 Q90,82 110,70 Q130,82 152,78 Q154,132 110,168 Q66,132 68,78 Z" fill="none" stroke="#d4af37" stroke-width="2" />
+          <line x1="110" y1="70" x2="110" y2="176" stroke="#d4af37" stroke-width="2.2" />
+          <polyline points="105,168 110,178 115,168" fill="none" stroke="#d4af37" stroke-width="2.2" />
+          <polygon points="110,66 42,164 178,164" fill="none" stroke="#d4af37" stroke-width="2" />
+          <path d="M64,122 Q110,94 156,122 Q110,150 64,122 Z" fill="#000000" stroke="#d4af37" stroke-width="2" />
+          <circle cx="110" cy="122" r="12" fill="none" stroke="#d4af37" stroke-width="2" />
+          <circle cx="110" cy="122" r="4.5" fill="#d4af37" />
+        </svg>
+        <span class="cta-pill">Entrar no Oraculário</span>
+      </button>
+
+      <div class="landing-bottom">
+        <p>O Baralho das 36 Mortes Miúdas · Manual Reconstituído da Lei do Estrago Inevitável.</p>
+        <p class="warn">Nenhuma lâmina deste maço é segura. Exposição Oraculário.</p>
+      </div>
+    </section>
+
+    <!-- SISTEMA PRINCIPAL -->
+    <main id="app" class="app" aria-label="Sistema de tiragens e arquivo">
+      <header class="app-header">
+        <div class="top-meta">Arquivo Morto · Fundo KGB · Inventário Nº 45</div>
+        <h1>O Baralho das <span>36 Mortes Miúdas</span></h1>
+        <p class="subtitle">Manual Reconstituído da Lei do Estrago Inevitável</p>
+      </header>
+
+      <nav class="nav-wrap" aria-label="Navegação do arquivo">
+        <div class="nav-row">
+          <button type="button" class="tab-btn active" id="tab-m1" onclick="abrirAba('m1')">Método I · 1</button>
+          <button type="button" class="tab-btn" id="tab-m2" onclick="abrirAba('m2')">Método II · 3</button>
+          <button type="button" class="tab-btn" id="tab-m3" onclick="abrirAba('m3')">Método III · 5</button>
+        </div>
+        <div class="nav-row">
+          <button type="button" class="tab-btn" id="tab-lista" onclick="abrirAba('lista')">36 Lâminas</button>
+          <button type="button" class="tab-btn" id="tab-manual" onclick="abrirAba('manual')">Manual</button>
+          <button type="button" class="tab-btn" id="tab-historico" onclick="abrirAba('historico')">Histórico</button>
+        </div>
+      </nav>
+
+      <div class="alert-strip">
+        <strong>Atenção:</strong> Todas as cartas significam <strong>MORTE</strong>, invariavelmente.
+        O consulente não deve procurar esperança.
+      </div>
+
+      <!-- MÉTODO I -->
+      <section id="view-m1" class="view active">
+        <div class="method-diagram">
+          <img src="method1.jpg" alt="Diagrama do Método I — O Golpe Seco" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">Disposição · 1 lâmina</div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="draw-btn" onclick="sortearMetodo('m1')">
+            Sortear · Método I — O Golpe Seco
+          </button>
+          <button type="button" class="secondary-btn" onclick="alternarSimNao()">Sim / Não</button>
+        </div>
+
+        <div id="sim-nao-box" class="sim-nao-box">
+          Para perguntas de <strong>SIM</strong> ou <strong>NÃO</strong>, todas as 36 Mortes Miúdas significam <strong>NÃO</strong>.
+        </div>
+
+        <div id="out-m1" class="empty-state">
+          Toque em <strong>Sortear · Método I — O Golpe Seco</strong> para revelar 1 lâmina.
+        </div>
+      </section>
+
+      <!-- MÉTODO II -->
+      <section id="view-m2" class="view">
+        <div class="method-diagram">
+          <img src="method2.jpg" alt="Diagrama do Método II — A Triangulação do Prejuízo" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">Disposição · 3 lâminas</div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="draw-btn" onclick="sortearMetodo('m2')">
+            Sortear · Método II — A Triangulação do Prejuízo
+          </button>
+        </div>
+        <div id="out-m2" class="empty-state">
+          Três lâminas em sequência: <strong>1. A Raiz Podre</strong>, <strong>2. O Sintoma Atual</strong> e <strong>3. A Sentença</strong>.
+        </div>
+      </section>
+
+      <!-- MÉTODO III -->
+      <section id="view-m3" class="view">
+        <div class="method-diagram">
+          <img src="method3.jpg" alt="Diagrama do Método III — A Cruz da Lei do Estrago" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">Disposição · 5 lâminas em cruz</div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="draw-btn" onclick="sortearMetodo('m3')">
+            Sortear · Método III — A Cruz da Lei do Estrago
+          </button>
+        </div>
+        <div id="out-m3" class="empty-state">
+          Cinco lâminas em cruz: <strong>1. Centro</strong>, <strong>2. Esquerda</strong>, <strong>3. Direita</strong>, <strong>4. Acima</strong> e <strong>5. Abaixo</strong>.
+        </div>
+      </section>
+
+      <!-- LISTA DAS 36 CARTAS -->
+      <section id="view-lista" class="view">
+        <p class="list-hint">Toque em uma lâmina para ampliar</p>
+        <div id="lista-36"></div>
+      </section>
+
+      <!-- ABA PRÓPRIA DO MANUAL -->
+      <section id="view-manual" class="view">
+        <div class="doc-section">
+          <h2>Manual Reconstituído · 24 Páginas</h2>
+          <p>
+            Edição de campo reconstituída sob a premissa da Lei do Estrago Inevitável. Acesse o livreto em PDF ou abra a matriz no Google Docs.
+          </p>
+          <div class="manual-links">
+            <a class="manual-link-btn" href="O%20Baralho%20das%2036%20Mortes%20Mi%C3%BAdas.pdf" target="_blank" rel="noopener">
+              Abrir / Baixar PDF (24p)
+            </a>
+            <a class="manual-link-btn secondary" href="https://docs.google.com/document/d/10KDevmceWxokYngn5u5YHbQN7pUtY7ZQutPAOb0kLRk/edit?tab=t.0" target="_blank" rel="noopener">
+              Matriz no Google Docs
+            </a>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h2>Protocolo de Embaralhamento e Corte</h2>
+          <p>
+            Antes de cada tiragem, embaralhe as lâminas de olhos fechados, mentalizando com o alvo da má sorte. Em geral, qualquer pessoa envolvida com as cartas terá má sorte. A seguir, corte o maço firmemente com a mão esquerda em três montes equivalentes e reagrupe-os na ordem inversa, sem olhar a carta do fundo.
+          </p>
+        </div>
+
+        <div class="doc-section">
+          <h2>Métodos de Tiragem</h2>
+          <p>
+            <strong>Método I — O Golpe Seco (1 carta):</strong> o nível básico. Uma carta deve ser capaz de manifestar algum tipo de poderoso azar em um inimigo. Para perguntas de sim ou não, todas as 36 Mortes Miúdas significam NÃO.
+          </p>
+          <p>
+            <strong>Método II — A Triangulação do Prejuízo (3 cartas):</strong> disponha três em linha ou nos vértices do triângulo com o olho vigilante ao centro. A Carta 1 (A Raiz Podre) revela o erro que você já cometeu e não tem mais conserto; a Carta 2 (O Sintoma Atual) mostra quem ou o quê está sabotando você agora; a Carta 3 (A Sentença) confirma o desfecho inevitável e a fatura física ou material que restará para pagar.
+          </p>
+          <p>
+            <strong>Método III — A Cruz da Lei do Estrago (5 cartas):</strong> forme uma cruz colocando a Carta 1 no centro (o colapso principal em curso), a Carta 2 à esquerda (o inimigo oculto ou falso aliado), a Carta 3 à direita (a humilhação pública ou falha iminente), a Carta 4 acima (a ilusão que o consulente ainda alimenta) e a Carta 5 abaixo (o órgão afetado ou a ruína final que encerra o ciclo).
+          </p>
+          <p style="color: var(--alert);">
+            Nenhuma lâmina deste baralho é considerada segura. Consulte por sua conta e risco.
+          </p>
+        </div>
+      </section>
+
+      <!-- HISTÓRICO -->
+      <section id="view-historico" class="view">
+        <div class="doc-section">
+          <h2>Ficha Técnica</h2>
+          <div class="meta-line"><strong>Origem:</strong> Célula Ocultista do Partido Nazista, Berlim, maio de 1945</div>
+          <div class="meta-line"><strong>Reconstituição e Selagem:</strong> Departamento Experimental da KGB (anos 1980)</div>
+          <div class="meta-line"><strong>Classificação:</strong> Ativo Contaminado / Arquivo Morto</div>
+          <div class="meta-line"><strong>Advertência:</strong> Nenhuma lâmina deste maço é segura para qualquer tipo de interação.</div>
+        </div>
+
+        <div class="doc-section">
+          <h2>Histórico</h2>
+          <p>
+            Em maio de 1945, durante as buscas nos escombros de Berlim, uma unidade especial da contrainteligência soviética apreendeu os cadernos técnicos de uma célula nazista independente dedicada ao estudo de sistemas oraculares e cartomancia desviante. Com o objetivo de atacar inimigos do regime à distância com forças etéreas, o alto escalão do Reich encomendou um baralho de trinta e seis lâminas regido exclusivamente pela chamada Lei do Estrago Inevitável — uma premissa segundo a qual todo processo caminha de forma inexorável para a deterioração, o desgaste e o colapso, sem qualquer possibilidade de reversão. Assim sendo, o baralho devia manifestar a pior sorte possível para o alvo designado.
+          </p>
+          <p>
+            Os cadernos recolhidos em Berlim foram transferidos sob sigilo para um depósito técnico da KGB em Moscou, onde permaneceram arquivados sem movimentação por mais de três décadas até serem reativados no início da década de 1980 por uma seção especial dedicada a métodos não convencionais de inteligência. A partir das especificações apreendidas, o departamento mandou executar as trinta e seis ilustrações em estilo de gravura antiga, carimbando o selo oficial da espada e do escudo no canto superior direito de cada lâmina e gravando no verso o emblema do triângulo cortado pelo olho vigilante — adotado como o Olho da Lei do Estrago, que tudo registra sem intervir.
+          </p>
+          <p>
+            Concluída a primeira tiragem física, o protocolo autorizou exatamente três sessões experimentais de leitura cruzada com analistas internos e operadores requisitados, mas o programa foi interrompido imediatamente após a terceira rodada: semanas depois, todos os envolvidos na manipulação do baralho morreram em episódios distintos e aparentemente banais que reproduziam, ponto a ponto, as lâminas sorteadas sobre a mesa. Lacrado novamente como ativo contaminado em arquivo morto, o maço só veio a público após o vazamento recente das matrizes gráficas que dão origem a esta edição.
+          </p>
+        </div>
+      </section>
+
+      <footer class="footer-bar">
+        <button type="button" onclick="voltarLanding()">Voltar à Entrada</button>
+        <a href="O%20Baralho%20das%2036%20Mortes%20Mi%C3%BAdas.pdf" target="_blank" rel="noopener">Manual PDF · 24p</a>
+      </footer>
+    </main>
+  </div>
+
+  <!-- MODAL DE ZOOM DAS CARTAS -->
+  <div id="zoom-modal" class="zoom-modal" role="dialog" aria-modal="true" aria-labelledby="zoom-title" onclick="fecharZoomBackdrop(event)">
+    <div class="zoom-panel">
+      <div class="zoom-top">
+        <span id="zoom-code">LÂMINA #00</span>
+        <button type="button" class="zoom-close" onclick="fecharZoom()">Fechar</button>
+      </div>
+      <div class="zoom-img-wrap">
+        <img id="zoom-img" src="" alt="" />
+      </div>
+      <h2 id="zoom-title" class="zoom-title"></h2>
+      <p id="zoom-desc" class="zoom-desc"></p>
     </div>
-
-    <!-- MÉTODO I -->
-    <section id="view-m1" class="view active">
-      <div class="action-row">
-        <button class="draw-btn" onclick="sortearMetodo('m1')">
-          Método I — O Golpe Seco (1 Lâmina)
-        </button>
-        <button class="secondary-btn" onclick="alternarSimNao()">Sim / Não</button>
-      </div>
-
-      <div id="sim-nao-box" class="sim-nao-box">
-        Para perguntas de <strong>SIM</strong> ou <strong>NÃO</strong>, todas as 36 Mortes Miúdas significam <strong>NÃO</strong>.
-      </div>
-
-      <div id="out-m1" class="empty-state">
-        Toque em <strong>Método I — O Golpe Seco</strong> para sortear 1 lâmina.
-      </div>
-    </section>
-
-    <!-- MÉTODO II -->
-    <section id="view-m2" class="view">
-      <div class="action-row">
-        <button class="draw-btn" onclick="sortearMetodo('m2')">
-          Método II — A Triangulação do Prejuízo (3 Lâminas)
-        </button>
-      </div>
-      <div id="out-m2" class="empty-state">
-        Disponha três cartas nos vértices do triângulo com o olho vigilante ao centro: <strong>1. A Raiz Podre</strong>, <strong>2. O Sintoma Atual</strong> e <strong>3. A Sentença</strong>.
-      </div>
-    </section>
-
-    <!-- MÉTODO III -->
-    <section id="view-m3" class="view">
-      <div class="action-row">
-        <button class="draw-btn" onclick="sortearMetodo('m3')">
-          Método III — A Cruz da Lei do Estrago (5 Lâminas)
-        </button>
-      </div>
-      <div id="out-m3" class="empty-state">
-        Forme a cruz: <strong>1. Centro</strong>, <strong>2. Esquerda</strong>, <strong>3. Direita</strong>, <strong>4. Acima</strong> e <strong>5. Abaixo</strong>.
-      </div>
-    </section>
-
-    <!-- LISTA DAS 36 CARTAS -->
-    <section id="view-lista" class="view">
-      <div id="lista-36"></div>
-    </section>
-
-    <!-- HISTÓRICO & PROTOCOLO -->
-    <section id="view-historico" class="view">
-      <div class="doc-section">
-        <h2>Ficha Técnica</h2>
-        <div class="meta-line"><strong>Origem:</strong> Célula Ocultista do Partido Nazista, Berlim, maio de 1945</div>
-        <div class="meta-line"><strong>Reconstituição e Selagem:</strong> Departamento Experimental da KGB (anos 1980)</div>
-        <div class="meta-line"><strong>Classificação:</strong> Ativo Contaminado / Arquivo Morto</div>
-        <div class="meta-line"><strong>Advertência:</strong> Nenhuma lâmina deste maço é segura para qualquer tipo de interação.</div>
-      </div>
-
-      <div class="doc-section">
-        <h2>Histórico</h2>
-        <p>
-          Em maio de 1945, durante as buscas nos escombros de Berlim, uma unidade especial da contrainteligência soviética apreendeu os cadernos técnicos de uma célula nazista independente dedicada ao estudo de sistemas oraculares e cartomancia desviante. Com o objetivo de atacar inimigos do regime à distância com forças etéreas, o alto escalão do Reich encomendou um baralho de trinta e seis lâminas regido exclusivamente pela chamada Lei do Estrago Inevitável — uma premissa segundo a qual todo processo caminha de forma inexorável para a deterioração, o desgaste e o colapso, sem qualquer possibilidade de reversão. Assim sendo, o baralho devia manifestar a pior sorte possível para o alvo designado.
-        </p>
-        <p>
-          Os cadernos recolhidos em Berlim foram transferidos sob sigilo para um depósito técnico da KGB em Moscou, onde permaneceram arquivados sem movimentação por mais de três décadas até serem reativados no início da década de 1980 por uma seção especial dedicada a métodos não convencionais de inteligência. A partir das especificações apreendidas, o departamento mandou executar as trinta e seis ilustrações em estilo de gravura antiga, carimbando o selo oficial da espada e do escudo no canto superior direito de cada lâmina e gravando no verso o emblema do triângulo cortado pelo olho vigilante — adotado como o Olho da Lei do Estrago, que tudo registra sem intervir.
-        </p>
-        <p>
-          Concluída a primeira tiragem física, o protocolo autorizou exatamente três sessões experimentais de leitura cruzada com analistas internos e operadores requisitados, mas o programa foi interrompido imediatamente após a terceira rodada: semanas depois, todos os envolvidos na manipulação do baralho morreram em episódios distintos e aparentemente banais que reproduziam, ponto a ponto, as lâminas sorteadas sobre a mesa. Lacrado novamente como ativo contaminado em arquivo morto, o maço só veio a público após o vazamento recente das matrizes gráficas que dão origem a esta edição.
-        </p>
-      </div>
-
-      <div class="doc-section">
-        <h2>Protocolo de Campo</h2>
-        <p>
-          Antes de cada tiragem, embaralhe as lâminas de olhos fechados, mentalizando com o alvo da má sorte. Em geral, qualquer pessoa envolvida com as cartas terá má sorte. A seguir, corte o maço firmemente com a mão esquerda em três montes equivalentes e reagrupe-os na ordem inversa, sem olhar a carta do fundo.
-        </p>
-        <p style="color: var(--alert);">
-          Nenhuma lâmina deste baralho é considerada segura. Consulte por sua conta e risco.
-        </p>
-      </div>
-    </section>
-
-    <footer class="footer-bar">
-      <a href="O%20Baralho%20das%2036%20Mortes%20Mi%C3%BAdas.pdf" target="_blank" rel="noopener">Manual PDF (24p)</a>
-      <span>Exposição Oraculário</span>
-    </footer>
   </div>
 
   <script>
     const PASTA_PNGS = "pngs";
     const STAGGER_MS = 75;
-    const ANIM_DURACAO_MS = 260;
+    const ANIM_DURACAO_MS = 280;
+
+    const CANDIDATOS_LOGO = [
+      "assetslogo-36-mortes.jpg",
+      "assets/logo-36-mortes.jpg",
+      "assets/logo-36-mortes.png",
+      "logo-36-mortes.jpg",
+      "logo-36-mortes.png"
+    ];
+
+    (function iniciarLogoLanding() {
+      const img = document.getElementById("landing-logo-img");
+      const svg = document.getElementById("landing-logo-svg");
+      if (!img || !svg) return;
+      let idx = 0;
+
+      function tentarProximo() {
+        if (idx >= CANDIDATOS_LOGO.length) {
+          img.style.display = "none";
+          svg.style.display = "block";
+          return;
+        }
+        img.src = CANDIDATOS_LOGO[idx++];
+      }
+
+      img.addEventListener("error", tentarProximo);
+      tentarProximo();
+    })();
 
     const CARTAS = [
       { numero: 1, nome: "O Vinil Americano na Sarjeta", significado: "Denota notícias adversas vindas de longe, acompanhadas de perturbação auditiva. Traz consigo a repetição exaustiva de um mesmo episódio constrangedor." },
@@ -506,16 +1009,16 @@
       m1: {
         outId: "out-m1",
         multiClass: "",
-        posicoes: ["Lâmina Única — O Golpe Seco"],
+        posicoes: ["Lâmina Única · O Golpe Seco"],
         padraoVibracao: 45
       },
       m2: {
         outId: "out-m2",
         multiClass: "multi-2",
         posicoes: [
-          "1. A Raiz Podre (Vértice 1)",
-          "2. O Sintoma Atual (Vértice 2)",
-          "3. A Sentença (Vértice 3)"
+          "1. A Raiz Podre",
+          "2. O Sintoma Atual",
+          "3. A Sentença"
         ],
         padraoVibracao: [35, 45, 35]
       },
@@ -523,11 +1026,11 @@
         outId: "out-m3",
         multiClass: "multi-2",
         posicoes: [
-          "1. Centro — Colapso principal em curso",
-          "2. Esquerda — Inimigo oculto ou falso aliado",
-          "3. Direita — Humilhação pública ou falha iminente",
-          "4. Acima — Ilusão que o consulente ainda alimenta",
-          "5. Abaixo — Órgão afetado ou ruína final"
+          "1. Centro · Colapso principal",
+          "2. Esquerda · Inimigo oculto",
+          "3. Direita · Humilhação pública",
+          "4. Acima · Ilusão alimentada",
+          "5. Abaixo · Ruína final"
         ],
         padraoVibracao: [30, 40, 30, 40, 55]
       }
@@ -548,6 +1051,17 @@
           }
         }
       }, totalAnimMs);
+    }
+
+    function entrarNoOraculario() {
+      document.getElementById("landing").classList.add("hidden");
+      document.getElementById("app").classList.add("active");
+      vibrarAposAnimacao(260, 35);
+    }
+
+    function voltarLanding() {
+      document.getElementById("app").classList.remove("active");
+      document.getElementById("landing").classList.remove("hidden");
     }
 
     function abrirAba(idAba) {
@@ -610,11 +1124,48 @@
       vibrarAposAnimacao(tempoTotalAnim, cfg.padraoVibracao);
     }
 
+    function abrirZoom(numeroCarta) {
+      const carta = CARTAS.find((c) => c.numero === numeroCarta);
+      if (!carta) return;
+
+      const modal = document.getElementById("zoom-modal");
+      const img = document.getElementById("zoom-img");
+      document.getElementById("zoom-code").textContent = `LÂMINA #${String(carta.numero).padStart(2, "0")}`;
+      document.getElementById("zoom-title").textContent = `${carta.numero}. ${carta.nome}`;
+      document.getElementById("zoom-desc").textContent = carta.significado;
+
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = `${PASTA_PNGS}/verso.png`;
+      };
+      img.src = `${PASTA_PNGS}/${carta.numero}.png`;
+      img.alt = `Carta ${carta.numero}: ${carta.nome}`;
+
+      modal.classList.add("open");
+      vibrarAposAnimacao(180, 25);
+    }
+
+    function fecharZoom() {
+      document.getElementById("zoom-modal").classList.remove("open");
+    }
+
+    function fecharZoomBackdrop(event) {
+      if (event.target.id === "zoom-modal") {
+        fecharZoom();
+      }
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        fecharZoom();
+      }
+    });
+
     function renderizarListaCompleta() {
       const alvo = document.getElementById("lista-36");
       alvo.innerHTML = CARTAS
         .map((carta) => `
-          <article class="list-item">
+          <button type="button" class="list-card-btn" onclick="abrirZoom(${carta.numero})" aria-label="Ampliar carta ${carta.numero}: ${carta.nome}">
             <img
               src="${PASTA_PNGS}/${carta.numero}.png"
               alt="Carta ${carta.numero}: ${carta.nome}"
@@ -623,8 +1174,9 @@
             <div>
               <div class="card-title">${carta.numero}. ${carta.nome}</div>
               <p class="card-desc">${carta.significado}</p>
+              <span class="zoom-tag">Ampliar lâmina →</span>
             </div>
-          </article>
+          </button>
         `)
         .join("");
     }
