@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Método I — O Golpe Seco | O Baralho das 36 Mortes Miúdas</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --panel: #090909;
+      --gold: #d4af37;
+      --gold-soft: rgba(212, 175, 55, 0.32);
+      --cream: #eae2d0;
+      --muted: #a39b8b;
+      --alert: #c0392b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+      padding: 14px;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--gold-soft);
+      padding: 18px 14px 24px;
+    }
+
+    .top-code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-align: center;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      color: var(--gold);
+      font-size: 1.3rem;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+
+    .nav-stub {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gold-soft);
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.72rem;
+    }
+
+    .nav-stub span {
+      padding: 5px 8px;
+      border: 1px solid var(--gold-soft);
+      color: var(--muted);
+    }
+
+    .nav-stub span.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.12);
+    }
+
+    .alert-strip {
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 8px;
+      margin-bottom: 16px;
+      border-top: 1px solid var(--gold-soft);
+      border-bottom: 1px solid var(--gold-soft);
+      color: var(--cream);
+    }
+
+    .alert-strip strong {
+      color: var(--alert);
+    }
+
+    .action-area {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .btn-draw {
+      width: 100%;
+      background: #141414;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 13px 16px;
+      font-family: Georgia, serif;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn-draw:active {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .result-card {
+      border: 1px solid var(--gold-soft);
+      background: #040404;
+      padding: 14px;
+    }
+
+    .card-art-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .card-art-wrap img {
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 7 / 9;
+      object-fit: cover;
+      border: 1px solid var(--gold);
+      background: #000000;
+    }
+
+    .card-num-title {
+      color: var(--gold);
+      font-size: 1.08rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .card-text {
+      font-size: 0.92rem;
+      color: var(--cream);
+      line-height: 1.55;
+    }
+
+    .placeholder-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 18px 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="top-code">Fundo KGB — Inventário Nº 45 // Oraculário</div>
+    <h1>Método I — O Golpe Seco</h1>
+    <p class="subtitle">Tiragem de 1 Lâmina · O Baralho das 36 Mortes Miúdas</p>
+
+    <div class="nav-stub">
+      <span class="active">Método I (1 Carta)</span>
+      <span>Método II (Em breve)</span>
+      <span>Método III (Em breve)</span>
+      <span>Lista / Histórico (Em breve)</span>
+    </div>
+
+    <div class="alert-strip">
+      <strong>ATENÇÃO!</strong> Todas as cartas significam <strong>MORTE</strong>, invariavelmente.
+    </div>
+
+    <div class="action-area">
+      <button class="btn-draw" onclick="sortearGolpeSeco()">Cortar e Tirar 1 Lâmina</button>
+    </div>
+
+    <section id="palco" class="result-card">
+      <div class="card-art-wrap">
+        <img id="img-carta" src="pngs/verso.png" alt="Verso da lâmina" />
+      </div>
+      <p class="placeholder-note" id="texto-carta">
+        Toque em <strong>Cortar e Tirar 1 Lâmina</strong> para revelar o estrago imediato.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    // Caminho base onde ficam 1.png ... 36.png e verso.png
+    const PASTA_PNGS = "pngs";
+
+    // Preencha aqui os significados revisados de 1 a 36 (mantendo numero e nome)
+    const CARTAS = [
+      { numero: 1, nome: "O Vinil Americano na Sarjeta", significado: "Denota notícias adversas vindas de longe, acompanhadas de perturbação auditiva persistente e desgastante. Traz consigo a repetição exaustiva de um mesmo episódio constrangedor imposto por terceiros de pouco convívio." },
+      { numero: 2, nome: "O Carro de Lixo", significado: "Anuncia obstrução fétida e atraso inevitável no exato momento em que a pontualidade seria decisiva. Indica que aquilo que se tentou ocultar virá à tona com repulsa pública e severo mal-estar estomacal." },
+      { numero: 3, nome: "A Larva da Podridão", significado: "Denota corrupção interna já instalada, tanto nas vísceras quanto em compromissos dados como certos. Traz consigo a ação silenciosa de parasitas próximos que consomem o pouco que ainda resta." },
+      { numero: 4, nome: "As Cartelas Vazias de Remédio para Depressão", significado: "" },
+      { numero: 5, nome: "A Árvore Arrancada pelo Vendaval", significado: "" },
+      { numero: 6, nome: "O Sorvete Derretido", significado: "" },
+      { numero: 7, nome: "A Aranha no Escritório", significado: "" },
+      { numero: 8, nome: "A Carcaça de Morcego", significado: "" },
+      { numero: 9, nome: "O Buquê de Flores Mortas", significado: "" },
+      { numero: 10, nome: "O Açougue", significado: "" },
+      { numero: 11, nome: "A Tropa de Choque", significado: "" },
+      { numero: 12, nome: "O Pinguim Afogado", significado: "" },
+      { numero: 13, nome: "O Ovo Estourado", significado: "" },
+      { numero: 14, nome: "O Tamanco", significado: "" },
+      { numero: 15, nome: "A Última Abelha Rainha", significado: "" },
+      { numero: 16, nome: "O Carro em Chamas", significado: "" },
+      { numero: 17, nome: "O Pinto Natimorto", significado: "" },
+      { numero: 18, nome: "O Computador Destruído", significado: "" },
+      { numero: 19, nome: "O Saco de Lixo", significado: "" },
+      { numero: 20, nome: "As Garrafas Vazias", significado: "" },
+      { numero: 21, nome: "Os Óculos na Merda", significado: "" },
+      { numero: 22, nome: "A Maionese Estourada", significado: "" },
+      { numero: 23, nome: "O Meio Rato", significado: "" },
+      { numero: 24, nome: "A Garrafa de Vinho Quebrada", significado: "" },
+      { numero: 25, nome: "A Camisinha Ensanguentada", significado: "" },
+      { numero: 26, nome: "As Páginas Arrancadas", significado: "" },
+      { numero: 27, nome: "A Meia na Merda", significado: "" },
+      { numero: 28, nome: "A Maleta Misteriosa", significado: "" },
+      { numero: 29, nome: "A Última Borboleta", significado: "" },
+      { numero: 30, nome: "O Papagaio Morto", significado: "" },
+      { numero: 31, nome: "O Sol de Papelão no Asfalto", significado: "" },
+      { numero: 32, nome: "O Sangue na Calçada", significado: "" },
+      { numero: 33, nome: "As Caixas de Cigarro na Sarjeta", significado: "" },
+      { numero: 34, nome: "Os Budas no Lixo", significado: "" },
+      { numero: 35, nome: "A Comida Jogada Fora", significado: "" },
+      { numero: 36, nome: "O Terço Arrebentado", significado: "" }
+    ];
+
+    function sortearGolpeSeco() {
+      const idx = Math.floor(Math.random() * CARTAS.length);
+      const carta = CARTAS[idx];
+      const palco = document.getElementById("palco");
+
+      const imgSrc = `${PASTA_PNGS}/${carta.numero}.png`;
+      const textoSignificado = carta.significado
+        ? carta.significado
+        : "Significado pendente de preenchimento no código para esta lâmina.";
+
+      palco.innerHTML = `
+        <div class="card-art-wrap">
+          <img src="${imgSrc}" alt="Carta ${carta.numero}: ${carta.nome}" onerror="this.src='${PASTA_PNGS}/verso.png'" />
+        </div>
+        <div class="card-num-title">${carta.numero}. ${carta.nome}</div>
+        <p class="card-text">${textoSignificado}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
