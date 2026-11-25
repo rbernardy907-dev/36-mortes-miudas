@@ -303,12 +303,16 @@
     /* NAVEGAÇÃO EM PÍLULAS CONTEMPORÂNEAS */
     .nav-wrap {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 8px;
+      align-items: center;
       margin-bottom: 20px;
     }
 
-    .nav-row {
+    .bottom-nav-wrap {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
@@ -320,9 +324,9 @@
       border: 1px solid var(--border-subtle);
       border-radius: 999px;
       color: var(--muted);
-      padding: 8px 15px;
+      padding: 8px 14px;
       font-family: var(--font-body);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.18s ease;
@@ -383,7 +387,7 @@
       flex-direction: column;
       align-items: center;
       padding: 20px 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       border-radius: 20px;
       background: var(--surface);
       border: 1px solid var(--border-subtle);
@@ -403,6 +407,14 @@
       font-size: 0.76rem;
       font-weight: 500;
       color: var(--muted);
+    }
+
+    /* TEXTO CURTO ACIMA DO BOTÃO / EMBLEMA */
+    .method-blurb {
+      font-size: 0.88rem;
+      line-height: 1.64;
+      color: var(--muted);
+      padding: 2px 4px 16px;
     }
 
     /* AÇÕES */
@@ -439,109 +451,254 @@
       transform: scale(0.985);
     }
 
-    button.secondary-btn {
-      background: var(--surface);
-      color: var(--cream);
-      border: 1px solid var(--border-subtle);
-      border-radius: 999px;
-      padding: 13px 18px;
-      font-family: var(--font-body);
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.16s ease, border-color 0.16s ease;
+    /* ABA PERGUNTA SIM OU NÃO */
+    .deck-trigger-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
-    button.secondary-btn:hover {
+    button.deck-logo-btn {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 22px 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--gold);
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    button.deck-logo-btn:hover {
       background: var(--surface-elevated);
       border-color: var(--border-gold);
+      transform: translateY(-2px);
     }
 
-    .sim-nao-box {
-      display: none;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      border-radius: 14px;
-      background: var(--surface);
-      border: 1px solid rgba(192, 57, 43, 0.32);
-      font-size: 0.86rem;
-      color: var(--cream);
-      animation: fadeUp 0.2s ease-out both;
+    button.deck-logo-btn:active {
+      transform: scale(0.985);
     }
 
-    .sim-nao-box.visible {
+    button.deck-logo-btn img {
+      width: 148px;
+      max-width: 46vw;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 18px;
+    }
+
+    .deck-logo-svg {
+      width: 136px;
+      max-width: 44vw;
+      height: auto;
       display: block;
     }
 
-    .sim-nao-box strong {
-      color: var(--alert);
+    .deck-trigger-caption {
+      font-family: var(--font-display);
+      font-size: 0.84rem;
       font-weight: 600;
+      color: var(--gold);
     }
 
-    /* CARTAS SORTEADAS */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 500px) {
-      .cards-grid.multi-2 {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-    }
-
-    .card-item {
-      padding: 18px;
+    .simnao-result-card {
+      padding: 22px 18px;
       border-radius: 20px;
       background: var(--surface);
       border: 1px solid var(--border-subtle);
-      opacity: 0;
-      animation: fadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: var(--delay, 0ms);
-    }
-
-    .card-pos {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(212, 175, 55, 0.1);
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--gold);
-      margin-bottom: 14px;
-    }
-
-    .card-img-wrap {
       display: flex;
-      justify-content: center;
-      margin-bottom: 16px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      animation: fadeUp 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    .card-img-wrap img {
+    .simnao-result-card img {
       width: 100%;
-      max-width: 220px;
+      max-width: 210px;
       aspect-ratio: 7 / 9;
       object-fit: cover;
       border-radius: 12px;
       background: var(--bg);
+      cursor: pointer;
     }
 
-    .card-title {
+    .simnao-card-name {
       font-family: var(--font-display);
       color: var(--cream);
       font-size: 1.05rem;
       font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      margin-bottom: 6px;
+      text-align: center;
     }
 
-    .card-desc {
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: var(--muted);
+    .simnao-answer {
+      font-family: var(--font-display);
+      color: var(--alert);
+      font-size: 1.45rem;
+      font-weight: 700;
+      text-transform: none;
+      text-align: center;
+      letter-spacing: 0;
+    }
+
+    /* DISPOSIÇÕES ESPACIAIS DAS CARTAS NOS MÉTODOS */
+    .spread-single {
+      display: flex;
+      justify-content: center;
+    }
+
+    .spread-single .slot-card {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    /* TRIÂNGULO (3 CARTAS): 1 e 2 em cima, 3 centralizada embaixo */
+    .spread-triangle {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 12px;
+      align-items: start;
+    }
+
+    .spread-triangle .slot-3 {
+      grid-column: 1 / -1;
+      width: calc(50% - 6px);
+      justify-self: center;
+    }
+
+    /* CRUZ (5 CARTAS): 4 em cima, 2 · 1 · 3 no meio, 5 embaixo */
+    .spread-cross {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px 8px;
+      align-items: start;
+    }
+
+    .spread-cross .slot-4 {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .spread-cross .slot-2 {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .spread-cross .slot-1 {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .spread-cross .slot-3 {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    .spread-cross .slot-5 {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    button.slot-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 10px 8px 12px;
+      color: inherit;
+      font: inherit;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: var(--delay, 0ms);
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+
+    button.slot-card:hover {
+      background: var(--surface-elevated);
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
+
+    .slot-pos {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.11);
+      font-size: 0.64rem;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--gold);
+    }
+
+    .slot-card img {
+      width: 100%;
+      aspect-ratio: 7 / 9;
+      object-fit: cover;
+      border-radius: 10px;
+      background: var(--bg);
+      display: block;
+    }
+
+    .slot-title {
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .spread-single button.slot-card {
+      padding: 18px 16px;
+      border-radius: 20px;
+      gap: 12px;
+    }
+
+    .spread-single .slot-pos {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+    }
+
+    .spread-single .slot-title {
+      font-size: 1.02rem;
+    }
+
+    @media (min-width: 520px) {
+      .spread-triangle {
+        gap: 18px 18px;
+      }
+
+      .spread-triangle .slot-3 {
+        width: calc(50% - 9px);
+      }
+
+      .spread-cross {
+        gap: 18px 14px;
+      }
+
+      button.slot-card {
+        padding: 12px 10px 14px;
+        border-radius: 18px;
+      }
+
+      .slot-pos {
+        font-size: 0.7rem;
+      }
+
+      .slot-title {
+        font-size: 0.88rem;
+      }
     }
 
     .empty-state {
@@ -558,7 +715,7 @@
       font-weight: 500;
     }
 
-    /* LISTA DAS 36 CARTAS COM ZOOM */
+    /* SIGNIFICADOS DAS CARTAS COM ZOOM */
     .list-hint {
       font-size: 0.78rem;
       color: var(--muted);
@@ -602,9 +759,25 @@
       background: var(--bg);
     }
 
+    .card-title {
+      font-family: var(--font-display);
+      color: var(--cream);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
     .zoom-tag {
       display: inline-block;
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 0.74rem;
       font-weight: 500;
       color: var(--gold);
@@ -632,7 +805,7 @@
 
     .zoom-panel {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       max-height: 92vh;
       overflow-y: auto;
       background: var(--surface);
@@ -676,8 +849,8 @@
 
     .zoom-img-wrap img {
       width: 100%;
-      max-width: 290px;
-      aspect-ratio: 7 / 9;
+      max-width: 340px;
+      max-height: 62vh;
       object-fit: contain;
       border-radius: 14px;
       background: var(--bg);
@@ -777,8 +950,77 @@
       font-weight: 500;
     }
 
+    /* DOCUMENTOS OFICIAIS POR / RUS NO HISTÓRICO */
+    .official-doc-frame {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    button.official-doc-trigger {
+      background: var(--bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      transition: border-color 0.18s ease;
+    }
+
+    button.official-doc-trigger:hover {
+      border-color: var(--border-gold);
+    }
+
+    button.official-doc-trigger img {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .lang-switch-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button.lang-link-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid transparent;
+      padding: 4px 8px;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.16s ease, border-color 0.16s ease;
+    }
+
+    button.lang-link-btn:hover {
+      color: var(--cream);
+    }
+
+    button.lang-link-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .lang-sep {
+      color: var(--muted);
+      font-size: 0.72rem;
+      opacity: 0.5;
+    }
+
     .footer-bar {
-      margin-top: 28px;
+      margin-top: 24px;
       padding-top: 16px;
       display: flex;
       justify-content: space-between;
@@ -815,8 +1057,8 @@
       .landing,
       .app.active,
       .view.active,
-      .card-item,
-      .sim-nao-box,
+      button.slot-card,
+      .simnao-result-card,
       .zoom-modal {
         animation: none;
         opacity: 1;
@@ -836,7 +1078,7 @@
         <h2 class="gate-title">O baralho a seguir não é seguro para interação.</h2>
         <p class="gate-text">
           Este sistema reúne o material reconstituído do <strong>Inventário Nº 45</strong>.
-          Todas as lâminas operam sob a Lei do Estrago Inevitável. Prossiga apenas por sua conta e risco.
+          Todas as cartas operam sob a Lei do Estrago Inevitável. Prossiga apenas por sua conta e risco.
         </p>
         <button type="button" class="gate-btn" onclick="aceitarAviso()">
           Estou ciente e desejo continuar
@@ -870,7 +1112,7 @@
 
       <div class="landing-bottom">
         <p>O Baralho das 36 Mortes Miúdas · Manual Reconstituído da Lei do Estrago Inevitável.</p>
-        <p class="warn">Nenhuma lâmina deste maço é segura. Exposição Oraculário.</p>
+        <p class="warn">Nenhuma carta deste baralho é segura. Exposição Oraculário.</p>
       </div>
     </section>
 
@@ -882,17 +1124,11 @@
         <p class="subtitle">Manual Reconstituído da Lei do Estrago Inevitável</p>
       </header>
 
-      <nav class="nav-wrap" aria-label="Navegação do arquivo">
-        <div class="nav-row">
-          <button type="button" class="tab-btn active" id="tab-m1" onclick="abrirAba('m1')">Método I · 1</button>
-          <button type="button" class="tab-btn" id="tab-m2" onclick="abrirAba('m2')">Método II · 3</button>
-          <button type="button" class="tab-btn" id="tab-m3" onclick="abrirAba('m3')">Método III · 5</button>
-        </div>
-        <div class="nav-row">
-          <button type="button" class="tab-btn" id="tab-lista" onclick="abrirAba('lista')">36 Lâminas</button>
-          <button type="button" class="tab-btn" id="tab-manual" onclick="abrirAba('manual')">Manual</button>
-          <button type="button" class="tab-btn" id="tab-historico" onclick="abrirAba('historico')">Histórico</button>
-        </div>
+      <nav class="nav-wrap" aria-label="Métodos de tiragem">
+        <button type="button" class="tab-btn active" id="tab-m1" onclick="abrirAba('m1')">O Golpe Seco</button>
+        <button type="button" class="tab-btn" id="tab-m2" onclick="abrirAba('m2')">A Triangulação do Prejuízo</button>
+        <button type="button" class="tab-btn" id="tab-m3" onclick="abrirAba('m3')">A Cruz da Lei do Estrago</button>
+        <button type="button" class="tab-btn" id="tab-simnao" onclick="abrirAba('simnao')">Pergunta Sim ou Não</button>
       </nav>
 
       <div class="alert-strip">
@@ -900,70 +1136,107 @@
         O consulente não deve procurar esperança.
       </div>
 
-      <!-- MÉTODO I -->
+      <!-- O GOLPE SECO -->
       <section id="view-m1" class="view active">
         <div class="method-diagram">
-          <img src="method1.jpg" alt="Diagrama do Método I — O Golpe Seco" onerror="this.style.display='none';" />
-          <div class="method-diagram-caption">Disposição · 1 lâmina</div>
+          <img src="method1.jpg" alt="Diagrama — O Golpe Seco" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">O Golpe Seco · 1 carta</div>
         </div>
+
+        <p class="method-blurb">
+          Um único estalo seco antes que o ar mude de temperatura. O baralho escolhe uma carta fria para cravar o azar no alvo antes que ele perceba o que encostou nas costas. Toque no botão abaixo para deixar a sorte podre puxar uma carta.
+        </p>
 
         <div class="action-row">
           <button type="button" class="draw-btn" onclick="sortearMetodo('m1')">
-            Sortear · Método I — O Golpe Seco
+            Sortear · O Golpe Seco
           </button>
-          <button type="button" class="secondary-btn" onclick="alternarSimNao()">Sim / Não</button>
-        </div>
-
-        <div id="sim-nao-box" class="sim-nao-box">
-          Para perguntas de <strong>SIM</strong> ou <strong>NÃO</strong>, todas as 36 Mortes Miúdas significam <strong>NÃO</strong>.
         </div>
 
         <div id="out-m1" class="empty-state">
-          Toque em <strong>Sortear · Método I — O Golpe Seco</strong> para revelar 1 lâmina.
+          Toque em <strong>Sortear · O Golpe Seco</strong> para revelar 1 carta.
         </div>
       </section>
 
-      <!-- MÉTODO II -->
+      <!-- A TRIANGULAÇÃO DO PREJUÍZO -->
       <section id="view-m2" class="view">
         <div class="method-diagram">
-          <img src="method2.jpg" alt="Diagrama do Método II — A Triangulação do Prejuízo" onerror="this.style.display='none';" />
-          <div class="method-diagram-caption">Disposição · 3 lâminas</div>
+          <img src="method2.jpg" alt="Diagrama — A Triangulação do Prejuízo" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">A Triangulação do Prejuízo · 3 cartas</div>
         </div>
+
+        <p class="method-blurb">
+          Três cartas fecham um circuito de desgaste onde nada volta inteiro para o lugar. Cada vértice aponta a falha de origem, o atrito presente e a cobrança que não prescreve. Acione abaixo para sortear o triângulo.
+        </p>
 
         <div class="action-row">
           <button type="button" class="draw-btn" onclick="sortearMetodo('m2')">
-            Sortear · Método II — A Triangulação do Prejuízo
+            Sortear · A Triangulação do Prejuízo
           </button>
         </div>
         <div id="out-m2" class="empty-state">
-          Três lâminas em sequência: <strong>1. A Raiz Podre</strong>, <strong>2. O Sintoma Atual</strong> e <strong>3. A Sentença</strong>.
+          Três cartas em triângulo: <strong>1. A Raiz Podre</strong>, <strong>2. O Sintoma Atual</strong> e <strong>3. A Sentença</strong>.
         </div>
       </section>
 
-      <!-- MÉTODO III -->
+      <!-- A CRUZ DA LEI DO ESTRAGO -->
       <section id="view-m3" class="view">
         <div class="method-diagram">
-          <img src="method3.jpg" alt="Diagrama do Método III — A Cruz da Lei do Estrago" onerror="this.style.display='none';" />
-          <div class="method-diagram-caption">Disposição · 5 lâminas em cruz</div>
+          <img src="method3.jpg" alt="Diagrama — A Cruz da Lei do Estrago" onerror="this.style.display='none';" />
+          <div class="method-diagram-caption">A Cruz da Lei do Estrago · 5 cartas em cruz</div>
         </div>
+
+        <p class="method-blurb">
+          Cinco cartas abrem um mapa de colapso em quatro direções e um centro que já está cedendo. O esquema cruza sabotagem oculta, vexame exposto, miragem mantida e o golpe final do ciclo. Toque abaixo para armar a cruz.
+        </p>
 
         <div class="action-row">
           <button type="button" class="draw-btn" onclick="sortearMetodo('m3')">
-            Sortear · Método III — A Cruz da Lei do Estrago
+            Sortear · A Cruz da Lei do Estrago
           </button>
         </div>
         <div id="out-m3" class="empty-state">
-          Cinco lâminas em cruz: <strong>1. Centro</strong>, <strong>2. Esquerda</strong>, <strong>3. Direita</strong>, <strong>4. Acima</strong> e <strong>5. Abaixo</strong>.
+          Cinco cartas em cruz: <strong>1. Centro</strong>, <strong>2. Esquerda</strong>, <strong>3. Direita</strong>, <strong>4. Acima</strong> e <strong>5. Abaixo</strong>.
         </div>
       </section>
 
-      <!-- LISTA DAS 36 CARTAS -->
-      <section id="view-lista" class="view">
-        <p class="list-hint">Toque em uma lâmina para ampliar</p>
+      <!-- ABA PERGUNTA SIM OU NÃO -->
+      <section id="view-simnao" class="view">
+        <p class="method-blurb">
+          Qualquer ferramenta de divinação possui sua análise binária. Sim ou não? Toque no emblema abaixo para puxar uma carta e deixar o Baralho das 36 Mortes Miúdas responder uma pergunta com sim ou não.
+        </p>
+
+        <div class="deck-trigger-box">
+          <button type="button" class="deck-logo-btn" onclick="sortearSimNao()" aria-label="Puxar uma carta tocando no emblema do baralho">
+            <img class="deck-logo-img" src="assetslogo-36-mortes.jpg" alt="Emblema do baralho para sorteio" />
+            <svg class="deck-logo-svg" style="display: none;" viewBox="0 0 220 220" width="136" height="136" role="img" aria-label="Emblema 36 Mortes Miúdas">
+              <polygon points="110,18 113.5,25.5 121.5,26.5 115.6,32 117.1,40 110,36 102.9,40 104.4,32 98.5,26.5 106.5,25.5" fill="#d4af37" />
+              <line x1="110" y1="45" x2="110" y2="70" stroke="#d4af37" stroke-width="2.2" />
+              <path d="M84,74 Q97,66 110,70 Q123,66 136,74" fill="none" stroke="#d4af37" stroke-width="2.2" />
+              <path d="M68,78 Q90,82 110,70 Q130,82 152,78 Q154,132 110,168 Q66,132 68,78 Z" fill="none" stroke="#d4af37" stroke-width="2" />
+              <line x1="110" y1="70" x2="110" y2="176" stroke="#d4af37" stroke-width="2.2" />
+              <polyline points="105,168 110,178 115,168" fill="none" stroke="#d4af37" stroke-width="2.2" />
+              <polygon points="110,66 42,164 178,164" fill="none" stroke="#d4af37" stroke-width="2" />
+              <path d="M64,122 Q110,94 156,122 Q110,150 64,122 Z" fill="#000000" stroke="#d4af37" stroke-width="2" />
+              <circle cx="110" cy="122" r="12" fill="none" stroke="#d4af37" stroke-width="2" />
+              <circle cx="110" cy="122" r="4.5" fill="#d4af37" />
+            </svg>
+            <span class="deck-trigger-caption">Toque no emblema para puxar uma carta</span>
+          </button>
+        </div>
+
+        <div id="out-simnao" class="empty-state" style="text-align: center;">
+          Toque no emblema acima para puxar uma carta.
+        </div>
+      </section>
+
+      <!-- SIGNIFICADOS DAS CARTAS -->
+      <section id="view-significados" class="view">
+        <p class="list-hint">Toque em uma carta para ampliar</p>
         <div id="lista-36"></div>
       </section>
 
-      <!-- ABA PRÓPRIA DO MANUAL -->
+      <!-- MANUAL -->
       <section id="view-manual" class="view">
         <div class="doc-section">
           <h2>Manual Reconstituído · 24 Páginas</h2>
@@ -983,23 +1256,23 @@
         <div class="doc-section">
           <h2>Protocolo de Embaralhamento e Corte</h2>
           <p>
-            Antes de cada tiragem, embaralhe as lâminas de olhos fechados, mentalizando com o alvo da má sorte. Em geral, qualquer pessoa envolvida com as cartas terá má sorte. A seguir, corte o maço firmemente com a mão esquerda em três montes equivalentes e reagrupe-os na ordem inversa, sem olhar a carta do fundo.
+            Antes de cada tiragem, embaralhe as cartas de olhos fechados, mentalizando com o alvo da má sorte. Em geral, qualquer pessoa envolvida com as cartas terá má sorte. A seguir, corte o baralho firmemente com a mão esquerda em três montes equivalentes e reagrupe-os na ordem inversa, sem olhar a carta do fundo.
           </p>
         </div>
 
         <div class="doc-section">
           <h2>Métodos de Tiragem</h2>
           <p>
-            <strong>Método I — O Golpe Seco (1 carta):</strong> o nível básico. Uma carta deve ser capaz de manifestar algum tipo de poderoso azar em um inimigo. Para perguntas de sim ou não, todas as 36 Mortes Miúdas significam NÃO.
+            <strong>O Golpe Seco (1 carta):</strong> o nível básico. Uma carta deve ser capaz de manifestar algum tipo de poderoso azar em um inimigo. Para perguntas de sim ou não, todas as 36 Mortes Miúdas significam NÃO.
           </p>
           <p>
-            <strong>Método II — A Triangulação do Prejuízo (3 cartas):</strong> disponha três em linha ou nos vértices do triângulo com o olho vigilante ao centro. A Carta 1 (A Raiz Podre) revela o erro que você já cometeu e não tem mais conserto; a Carta 2 (O Sintoma Atual) mostra quem ou o quê está sabotando você agora; a Carta 3 (A Sentença) confirma o desfecho inevitável e a fatura física ou material que restará para pagar.
+            <strong>A Triangulação do Prejuízo (3 cartas):</strong> disponha três em linha ou nos vértices do triângulo com o olho vigilante ao centro. A Carta 1 (A Raiz Podre) revela o erro que você já cometeu e não tem mais conserto; a Carta 2 (O Sintoma Atual) mostra quem ou o quê está sabotando você agora; a Carta 3 (A Sentença) confirma o desfecho inevitável e a fatura física ou material que restará para pagar.
           </p>
           <p>
-            <strong>Método III — A Cruz da Lei do Estrago (5 cartas):</strong> forme uma cruz colocando a Carta 1 no centro (o colapso principal em curso), a Carta 2 à esquerda (o inimigo oculto ou falso aliado), a Carta 3 à direita (a humilhação pública ou falha iminente), a Carta 4 acima (a ilusão que o consulente ainda alimenta) e a Carta 5 abaixo (o órgão afetado ou a ruína final que encerra o ciclo).
+            <strong>A Cruz da Lei do Estrago (5 cartas):</strong> forme uma cruz colocando a Carta 1 no centro (o colapso principal em curso), a Carta 2 à esquerda (o inimigo oculto ou falso aliado), a Carta 3 à direita (a humilhação pública ou falha iminente), a Carta 4 acima (a ilusão que o consulente ainda alimenta) e a Carta 5 abaixo (o órgão afetado ou a ruína final que encerra o ciclo).
           </p>
           <p style="color: var(--alert);">
-            Nenhuma lâmina deste baralho é considerada segura. Consulte por sua conta e risco.
+            Nenhuma carta deste baralho é considerada segura. Consulte por sua conta e risco.
           </p>
         </div>
       </section>
@@ -1011,22 +1284,48 @@
           <div class="meta-line"><strong>Origem:</strong> Célula Ocultista do Partido Nazista, Berlim, maio de 1945</div>
           <div class="meta-line"><strong>Reconstituição e Selagem:</strong> Departamento Experimental da KGB (anos 1980)</div>
           <div class="meta-line"><strong>Classificação:</strong> Ativo Contaminado / Arquivo Morto</div>
-          <div class="meta-line"><strong>Advertência:</strong> Nenhuma lâmina deste maço é segura para qualquer tipo de interação.</div>
+          <div class="meta-line"><strong>Advertência:</strong> Nenhuma carta deste baralho é segura para qualquer tipo de interação.</div>
         </div>
 
         <div class="doc-section">
           <h2>Histórico</h2>
           <p>
-            Em maio de 1945, durante as buscas nos escombros de Berlim, uma unidade especial da contrainteligência soviética apreendeu os cadernos técnicos de uma célula nazista independente dedicada ao estudo de sistemas oraculares e cartomancia desviante. Com o objetivo de atacar inimigos do regime à distância com forças etéreas, o alto escalão do Reich encomendou um baralho de trinta e seis lâminas regido exclusivamente pela chamada Lei do Estrago Inevitável — uma premissa segundo a qual todo processo caminha de forma inexorável para a deterioração, o desgaste e o colapso, sem qualquer possibilidade de reversão. Assim sendo, o baralho devia manifestar a pior sorte possível para o alvo designado.
+            Em maio de 1945, durante as buscas nos escombros de Berlim, uma unidade especial da contrainteligência soviética apreendeu os cadernos técnicos de uma célula nazista independente dedicada ao estudo de sistemas oraculares e cartomancia desviante. Com o objetivo de atacar inimigos do regime à distância com forças etéreas, o alto escalão do Reich encomendou um baralho de trinta e seis cartas regido exclusivamente pela chamada Lei do Estrago Inevitável — uma premissa segundo a qual todo processo caminha de forma inexorável para a deterioração, o desgaste e o colapso, sem qualquer possibilidade de reversão. Assim sendo, o baralho devia manifestar a pior sorte possível para o alvo designado.
           </p>
           <p>
-            Os cadernos recolhidos em Berlim foram transferidos sob sigilo para um depósito técnico da KGB em Moscou, onde permaneceram arquivados sem movimentação por mais de três décadas até serem reativados no início da década de 1980 por uma seção especial dedicada a métodos não convencionais de inteligência. A partir das especificações apreendidas, o departamento mandou executar as trinta e seis ilustrações em estilo de gravura antiga, carimbando o selo oficial da espada e do escudo no canto superior direito de cada lâmina e gravando no verso o emblema do triângulo cortado pelo olho vigilante — adotado como o Olho da Lei do Estrago, que tudo registra sem intervir.
+            Os cadernos recolhidos em Berlim foram transferidos sob sigilo para um depósito técnico da KGB em Moscou, onde permaneceram arquivados sem movimentação por mais de três décadas até serem reativados no início da década de 1980 por uma seção especial dedicada a métodos não convencionais de inteligência. A partir das especificações apreendidas, o departamento mandou executar as trinta e seis ilustrações em estilo de gravura antiga, carimbando o selo oficial da espada e do escudo no canto superior direito de cada carta e gravando no verso o emblema do triângulo cortado pelo olho vigilante — adotado como o Olho da Lei do Estrago, que tudo registra sem intervir.
           </p>
           <p>
-            Concluída a primeira tiragem física, o protocolo autorizou exatamente três sessões experimentais de leitura cruzada com analistas internos e operadores requisitados, mas o programa foi interrompido imediatamente após a terceira rodada: semanas depois, todos os envolvidos na manipulação do baralho morreram em episódios distintos e aparentemente banais que reproduziam, ponto a ponto, as lâminas sorteadas sobre a mesa. Lacrado novamente como ativo contaminado em arquivo morto, o maço só veio a público após o vazamento recente das matrizes gráficas que dão origem a esta edição.
+            Concluída a primeira tiragem física, o protocolo autorizou exatamente três sessões experimentais de leitura cruzada com analistas internos e operadores requisitados, mas o programa foi interrompido imediatamente após a terceira rodada: semanas depois, todos os envolvidos na manipulação do baralho morreram em episódios distintos e aparentemente banais que reproduziam, ponto a ponto, as cartas sorteadas sobre a mesa. Lacrado novamente como ativo contaminado em arquivo morto, o baralho só veio a público após o vazamento recente das matrizes gráficas que dão origem a esta edição.
           </p>
         </div>
+
+        <div class="doc-section">
+          <h2>Despacho de Arquivo · Fundo Nº 45 — Lote 36</h2>
+          <p id="official-doc-desc">
+            Resolução sobre exposição pública emitida sob o Fundo Arquivístico Nº 45 — Lote 36 (versão em português). Toque na folha para ampliar.
+          </p>
+
+          <div class="official-doc-frame">
+            <button type="button" class="official-doc-trigger" onclick="abrirZoomDocOficial()" aria-label="Ampliar documento oficial">
+              <img id="official-doc-img" src="DOCOFICIALportugues.jpg" alt="Documento Oficial — Resolução sobre Exposição Pública (Português)" />
+            </button>
+
+            <div class="lang-switch-bar" role="group" aria-label="Alternar idioma do documento oficial">
+              <button type="button" class="lang-link-btn active" id="btn-doc-por" onclick="alternarDocOficial('por')">POR</button>
+              <span class="lang-sep">/</span>
+              <button type="button" class="lang-link-btn" id="btn-doc-rus" onclick="alternarDocOficial('rus')">RUS</button>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <!-- BOTÕES INFERIORES: SIGNIFICADOS DAS CARTAS, MANUAL E HISTÓRICO -->
+      <nav class="bottom-nav-wrap" aria-label="Seções de referência e arquivo">
+        <button type="button" class="tab-btn" id="tab-significados" onclick="abrirAba('significados', true)">Significados das Cartas</button>
+        <button type="button" class="tab-btn" id="tab-manual" onclick="abrirAba('manual', true)">Manual</button>
+        <button type="button" class="tab-btn" id="tab-historico" onclick="abrirAba('historico', true)">Histórico</button>
+      </nav>
 
       <footer class="footer-bar">
         <button type="button" onclick="voltarLanding()">Voltar à Entrada</button>
@@ -1035,11 +1334,11 @@
     </main>
   </div>
 
-  <!-- MODAL DE ZOOM DAS CARTAS -->
+  <!-- MODAL DE ZOOM DAS CARTAS E DOCUMENTOS -->
   <div id="zoom-modal" class="zoom-modal" role="dialog" aria-modal="true" aria-labelledby="zoom-title" onclick="fecharZoomBackdrop(event)">
     <div class="zoom-panel">
       <div class="zoom-top">
-        <span id="zoom-code">LÂMINA #00</span>
+        <span id="zoom-code">CARTA #00</span>
         <button type="button" class="zoom-close" onclick="fecharZoom()">Fechar</button>
       </div>
       <div class="zoom-img-wrap">
@@ -1055,6 +1354,25 @@
     const STAGGER_MS = 75;
     const ANIM_DURACAO_MS = 280;
 
+    const DOCS_OFICIAIS = {
+      por: {
+        src: "DOCOFICIALportugues.jpg",
+        alt: "Documento Oficial — Resolução sobre Exposição Pública (Português)",
+        desc: "Resolução sobre exposição pública emitida sob o Fundo Arquivístico Nº 45 — Lote 36 (versão em português). Toque na folha para ampliar.",
+        code: "ARQUIVO · POR",
+        title: "Resolução sobre Exposição Pública (Português)"
+      },
+      rus: {
+        src: "DOCOFICIALrusso.png",
+        alt: "Официальный документ — Постановление об общественном экспонировании (Русский)",
+        desc: "Постановление об общественном экспонировании из Архивного фонда № 45 — Лот 36 (версия на русском языке). Нажмите на лист, чтобы увеличить.",
+        code: "АРХИВ · RUS",
+        title: "Постановление об общественном экспонировании (Русский)"
+      }
+    };
+
+    let idiomaDocAtual = "por";
+
     const CANDIDATOS_LOGO = [
       "assetslogo-36-mortes.jpg",
       "assets/logo-36-mortes.jpg",
@@ -1063,23 +1381,27 @@
       "logo-36-mortes.png"
     ];
 
-    (function iniciarLogoLanding() {
-      const img = document.getElementById("landing-logo-img");
-      const svg = document.getElementById("landing-logo-svg");
-      if (!img || !svg) return;
-      let idx = 0;
+    (function iniciarLogos() {
+      const imgs = document.querySelectorAll("#landing-logo-img, .deck-logo-img");
+      const svgs = document.querySelectorAll("#landing-logo-svg, .deck-logo-svg");
+      if (!imgs.length) return;
 
-      function tentarProximo() {
-        if (idx >= CANDIDATOS_LOGO.length) {
-          img.style.display = "none";
-          svg.style.display = "block";
-          return;
+      imgs.forEach((img, i) => {
+        const fallbackSvg = svgs[i] || null;
+        let idx = 0;
+
+        function tentarProximo() {
+          if (idx >= CANDIDATOS_LOGO.length) {
+            img.style.display = "none";
+            if (fallbackSvg) fallbackSvg.style.display = "block";
+            return;
+          }
+          img.src = CANDIDATOS_LOGO[idx++];
         }
-        img.src = CANDIDATOS_LOGO[idx++];
-      }
 
-      img.addEventListener("error", tentarProximo);
-      tentarProximo();
+        img.addEventListener("error", tentarProximo);
+        tentarProximo();
+      });
     })();
 
     const CARTAS = [
@@ -1124,29 +1446,31 @@
     const CONFIG_METODOS = {
       m1: {
         outId: "out-m1",
-        multiClass: "",
-        posicoes: ["Lâmina Única · O Golpe Seco"],
+        layoutClass: "spread-single",
+        slots: [
+          { slotClass: "slot-1", pos: "Carta Única" }
+        ],
         padraoVibracao: 45
       },
       m2: {
         outId: "out-m2",
-        multiClass: "multi-2",
-        posicoes: [
-          "1. A Raiz Podre",
-          "2. O Sintoma Atual",
-          "3. A Sentença"
+        layoutClass: "spread-triangle",
+        slots: [
+          { slotClass: "slot-1", pos: "1. Raiz Podre" },
+          { slotClass: "slot-2", pos: "2. Sintoma Atual" },
+          { slotClass: "slot-3", pos: "3. Sentença" }
         ],
         padraoVibracao: [35, 45, 35]
       },
       m3: {
         outId: "out-m3",
-        multiClass: "multi-2",
-        posicoes: [
-          "1. Centro · Colapso principal",
-          "2. Esquerda · Inimigo oculto",
-          "3. Direita · Humilhação pública",
-          "4. Acima · Ilusão alimentada",
-          "5. Abaixo · Ruína final"
+        layoutClass: "spread-cross",
+        slots: [
+          { slotClass: "slot-1", pos: "1. Centro" },
+          { slotClass: "slot-2", pos: "2. Esquerda" },
+          { slotClass: "slot-3", pos: "3. Direita" },
+          { slotClass: "slot-4", pos: "4. Acima" },
+          { slotClass: "slot-5", pos: "5. Abaixo" }
         ],
         padraoVibracao: [30, 40, 30, 40, 55]
       }
@@ -1186,21 +1510,51 @@
       document.getElementById("landing").classList.add("active");
     }
 
-    function abrirAba(idAba) {
+    function abrirAba(idAba, rolarParaTopo = false) {
       document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
       document.querySelectorAll(".tab-btn").forEach((el) => el.classList.remove("active"));
 
       document.getElementById(`view-${idAba}`).classList.add("active");
       document.getElementById(`tab-${idAba}`).classList.add("active");
+
+      if (rolarParaTopo) {
+        const reduzMovimento = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({
+          top: 0,
+          behavior: reduzMovimento ? "auto" : "smooth"
+        });
+      }
     }
 
-    function alternarSimNao() {
-      const box = document.getElementById("sim-nao-box");
-      const vaiAbrir = !box.classList.contains("visible");
-      box.classList.toggle("visible");
-      if (vaiAbrir) {
-        vibrarAposAnimacao(200, 30);
-      }
+    function alternarDocOficial(lang) {
+      const doc = DOCS_OFICIAIS[lang];
+      if (!doc) return;
+      idiomaDocAtual = lang;
+
+      const img = document.getElementById("official-doc-img");
+      const desc = document.getElementById("official-doc-desc");
+      img.src = doc.src;
+      img.alt = doc.alt;
+      desc.textContent = doc.desc;
+
+      document.getElementById("btn-doc-por").classList.toggle("active", lang === "por");
+      document.getElementById("btn-doc-rus").classList.toggle("active", lang === "rus");
+    }
+
+    function abrirZoomDocOficial() {
+      const doc = DOCS_OFICIAIS[idiomaDocAtual] || DOCS_OFICIAIS.por;
+      const modal = document.getElementById("zoom-modal");
+      const img = document.getElementById("zoom-img");
+      document.getElementById("zoom-code").textContent = doc.code;
+      document.getElementById("zoom-title").textContent = doc.title;
+      document.getElementById("zoom-desc").textContent = doc.desc;
+
+      img.onerror = null;
+      img.src = doc.src;
+      img.alt = doc.alt;
+
+      modal.classList.add("open");
+      vibrarAposAnimacao(180, 25);
     }
 
     function sortearSemRepetir(lista, qtd) {
@@ -1212,34 +1566,57 @@
       return copia.slice(0, qtd);
     }
 
+    function sortearSimNao() {
+      const [carta] = sortearSemRepetir(CARTAS, 1);
+      const out = document.getElementById("out-simnao");
+      out.className = "";
+      out.innerHTML = `
+        <div class="simnao-result-card">
+          <img
+            src="${PASTA_PNGS}/${carta.numero}.png"
+            alt="Carta ${carta.numero}: ${carta.nome}"
+            onclick="abrirZoom(${carta.numero})"
+            onerror="this.onerror=null; this.src='${PASTA_PNGS}/verso.png';"
+          />
+          <div class="simnao-card-name">${carta.numero}. ${carta.nome}</div>
+          <div class="simnao-answer">Não</div>
+        </div>
+      `;
+      vibrarAposAnimacao(260, 40);
+    }
+
     function sortearMetodo(chave) {
       const cfg = CONFIG_METODOS[chave];
       if (!cfg) return;
 
-      const sorteadas = sortearSemRepetir(CARTAS, cfg.posicoes.length);
+      const sorteadas = sortearSemRepetir(CARTAS, cfg.slots.length);
       const out = document.getElementById(cfg.outId);
 
       const htmlCards = sorteadas
         .map((carta, i) => {
+          const slot = cfg.slots[i];
           const delay = i * STAGGER_MS;
           return `
-            <article class="card-item" style="--delay: ${delay}ms;">
-              <div class="card-pos">${cfg.posicoes[i]}</div>
-              <div class="card-img-wrap">
-                <img
-                  src="${PASTA_PNGS}/${carta.numero}.png"
-                  alt="Carta ${carta.numero}: ${carta.nome}"
-                  onerror="this.onerror=null; this.src='${PASTA_PNGS}/verso.png';"
-                />
-              </div>
-              <div class="card-title">${carta.numero}. ${carta.nome}</div>
-              <p class="card-desc">${carta.significado}</p>
-            </article>
+            <button
+              type="button"
+              class="slot-card ${slot.slotClass}"
+              style="--delay: ${delay}ms;"
+              onclick="abrirZoom(${carta.numero})"
+              aria-label="${slot.pos}: carta ${carta.numero} ${carta.nome}. Toque para ampliar."
+            >
+              <span class="slot-pos">${slot.pos}</span>
+              <img
+                src="${PASTA_PNGS}/${carta.numero}.png"
+                alt="Carta ${carta.numero}: ${carta.nome}"
+                onerror="this.onerror=null; this.src='${PASTA_PNGS}/verso.png';"
+              />
+              <div class="slot-title">${carta.numero}. ${carta.nome}</div>
+            </button>
           `;
         })
         .join("");
 
-      out.className = `cards-grid ${cfg.multiClass}`;
+      out.className = cfg.layoutClass;
       out.innerHTML = htmlCards;
 
       const tempoTotalAnim = (sorteadas.length - 1) * STAGGER_MS + ANIM_DURACAO_MS;
@@ -1252,7 +1629,7 @@
 
       const modal = document.getElementById("zoom-modal");
       const img = document.getElementById("zoom-img");
-      document.getElementById("zoom-code").textContent = `LÂMINA #${String(carta.numero).padStart(2, "0")}`;
+      document.getElementById("zoom-code").textContent = `CARTA #${String(carta.numero).padStart(2, "0")}`;
       document.getElementById("zoom-title").textContent = `${carta.numero}. ${carta.nome}`;
       document.getElementById("zoom-desc").textContent = carta.significado;
 
@@ -1296,7 +1673,7 @@
             <div>
               <div class="card-title">${carta.numero}. ${carta.nome}</div>
               <p class="card-desc">${carta.significado}</p>
-              <span class="zoom-tag">Ampliar lâmina →</span>
+              <span class="zoom-tag">Ampliar carta →</span>
             </div>
           </button>
         `)
