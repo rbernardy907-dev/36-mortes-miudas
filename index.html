@@ -52,10 +52,107 @@
       margin: 0 auto;
     }
 
-    /* LANDING PAGE */
-    .landing {
+    /* TELA DE AVISO PRÉVIO (GATE) */
+    .gate {
       min-height: calc(100vh - 84px);
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px 8px;
+      animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .gate.hidden {
+      display: none;
+    }
+
+    .gate-card {
+      width: 100%;
+      max-width: 440px;
+      padding: 32px 24px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(192, 57, 43, 0.08) 0%, var(--surface) 42%);
+      border: 1px solid rgba(192, 57, 43, 0.28);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .alert-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--alert-soft);
+      border: 1px solid rgba(192, 57, 43, 0.35);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--alert);
+    }
+
+    .alert-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--alert);
+      box-shadow: 0 0 8px var(--alert);
+    }
+
+    .gate-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 4.5vw, 1.65rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--cream);
+    }
+
+    .gate-text {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .gate-text strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .gate-btn {
+      margin-top: 6px;
+      width: 100%;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(192, 57, 43, 0.45);
+      background: var(--alert-soft);
+      color: var(--cream);
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+    }
+
+    .gate-btn:hover {
+      background: rgba(192, 57, 43, 0.22);
+      border-color: var(--alert);
+    }
+
+    .gate-btn:active {
+      transform: scale(0.985);
+    }
+
+    /* LANDING PAGE (EMBLEMA) */
+    .landing {
+      min-height: calc(100vh - 84px);
+      display: none;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
@@ -64,8 +161,8 @@
       animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    .landing.hidden {
-      display: none;
+    .landing.active {
+      display: flex;
     }
 
     .eyebrow-pill {
@@ -714,6 +811,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .gate,
       .landing,
       .app.active,
       .view.active,
@@ -728,7 +826,25 @@
 </head>
 <body>
   <div class="shell">
-    <!-- LANDING PAGE -->
+    <!-- TELA DE AVISO PRÉVIO -->
+    <section id="gate" class="gate" aria-label="Advertência de acesso">
+      <div class="gate-card">
+        <div class="alert-pill">
+          <span class="alert-dot"></span>
+          <span>Atenção · Ativo Contaminado</span>
+        </div>
+        <h2 class="gate-title">O baralho a seguir não é seguro para interação.</h2>
+        <p class="gate-text">
+          Este sistema reúne o material reconstituído do <strong>Inventário Nº 45</strong>.
+          Todas as lâminas operam sob a Lei do Estrago Inevitável. Prossiga apenas por sua conta e risco.
+        </p>
+        <button type="button" class="gate-btn" onclick="aceitarAviso()">
+          Estou ciente e desejo continuar
+        </button>
+      </div>
+    </section>
+
+    <!-- LANDING PAGE (EMBLEMA) -->
     <section id="landing" class="landing" aria-label="Entrada do projeto">
       <div class="eyebrow-pill">
         <span class="eyebrow-dot"></span>
@@ -1053,15 +1169,21 @@
       }, totalAnimMs);
     }
 
+    function aceitarAviso() {
+      document.getElementById("gate").classList.add("hidden");
+      document.getElementById("landing").classList.add("active");
+      vibrarAposAnimacao(220, 35);
+    }
+
     function entrarNoOraculario() {
-      document.getElementById("landing").classList.add("hidden");
+      document.getElementById("landing").classList.remove("active");
       document.getElementById("app").classList.add("active");
       vibrarAposAnimacao(260, 35);
     }
 
     function voltarLanding() {
       document.getElementById("app").classList.remove("active");
-      document.getElementById("landing").classList.remove("hidden");
+      document.getElementById("landing").classList.add("active");
     }
 
     function abrirAba(idAba) {
